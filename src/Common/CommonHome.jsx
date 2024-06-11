@@ -1,29 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-  EyeIcon,
-  ShoppingCartIcon,
-  StarIcon,
-} from "@heroicons/react/24/outline";
-import { authAxios } from "../config/config";
-import { CiHeart } from "react-icons/ci";
-import { toast } from "react-toastify";
-import ProductDetail from "./Models/ProductDetail";
-import { handleImage } from "../utils/helper";
 import { useNavigate } from "react-router-dom";
+import { withoutAuthAxios } from "../config/config";
 import { useSelector } from "react-redux";
 
 const CommonHome = () => {
-  const { accessToken } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const { accessToken } = useSelector((state) => state.auth);
+
   const [products, setproducts] = useState([]);
 
-  const [productDetail, setproductDetail] = useState({
-    data: [],
-    show: false,
-  });
 
   const fetchAllproducts = async () => {
-    await authAxios()
+    await withoutAuthAxios()
       .get("/product/get-all-products")
       .then((response) => {
         const resData = response.data;
@@ -31,25 +19,10 @@ const CommonHome = () => {
         setproducts(resData.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error",error);
       });
   };
 
-  const addTocart = async () => {
-    navigate("/login");
-  };
-
-  const addTowishlist = async () => {
-    navigate("/login");
-  };
-
-  const handleViewProductDetail = (item) => {
-    setproductDetail((prev) => ({
-      ...prev,
-      data: item,
-      show: true,
-    }));
-  };
 
   useEffect(() => {
     fetchAllproducts();
@@ -57,44 +30,85 @@ const CommonHome = () => {
       navigate("/home");
     }
   }, []);
-
   return (
-    <div class="flex items-center bg-white-100 min-h-screen">
-      <div class="container ml-auto mr-auto flex flex-wrap items-start">
-        <div class="w-full pl-5 lg:pl-2 mb-4 mt-4">
-          <h1 class="text-3xl lg:text-4xl text-gray-700 font-extrabold"></h1>
+    <div>
+      
+
+      <div className="px-6">
+
+        {/* Image Slider*/}
+        <div className="carousel w-full">
+          <div id="slide1" className="carousel-item relative w-full">
+            <img
+              src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.jpg"
+              className="w-full"
+            />
+            <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+              <a href="#slide4" className="btn btn-circle">
+                ❮
+              </a>
+              <a href="#slide2" className="btn btn-circle">
+                ❯
+              </a>
+            </div>
+          </div>
+          <div id="slide2" className="carousel-item relative w-full">
+            <img
+              src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.jpg"
+              className="w-full"
+            />
+            <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+              <a href="#slide1" className="btn btn-circle">
+                ❮
+              </a>
+              <a href="#slide3" className="btn btn-circle">
+                ❯
+              </a>
+            </div>
+          </div>
+          <div id="slide3" className="carousel-item relative w-full">
+            <img
+              src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.jpg"
+              className="w-full"
+            />
+            <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+              <a href="#slide2" className="btn btn-circle">
+                ❮
+              </a>
+              <a href="#slide4" className="btn btn-circle">
+                ❯
+              </a>
+            </div>
+          </div>
+          <div id="slide4" className="carousel-item relative w-full">
+            <img
+              src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.jpg"
+              className="w-full"
+            />
+            <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+              <a href="#slide3" className="btn btn-circle">
+                ❮
+              </a>
+              <a href="#slide1" className="btn btn-circle">
+                ❯
+              </a>
+            </div>
+          </div>
         </div>
 
-        {products &&
-          products.map((item) => (
-            <div className="card card-compact w-96 bg-base-100 shadow-xl">
-              <figure>
-                <img
-                  src={handleImage(item.images[0])}
-                  alt="Shoes"
-                  className="w-96 h-96"
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="font-bold  text-center">{item?.title}</h2>
-                <div className="p-3 flex items-start justify-between gap-1 py-5">
-                  <p className="card-title"> ${item.price}</p>
-                  <EyeIcon
-                    onClick={() => handleViewProductDetail(item)}
-                    className="h-6 w-6 cursor-pointer text-gray-500 float-right"
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        {productDetail.show && (
-          <ProductDetail
-            addTocart={addTocart}
-            addTowishlist={addTowishlist}
-            setproductDetail={setproductDetail}
-            productDetail={productDetail}
-          />
-        )}
+
+        {/*   */}
+
+        <div >
+        
+         <h1>Todays</h1>
+
+         <h4>Flash Sales</h4>  
+
+
+        </div>
+
+
       </div>
     </div>
   );
