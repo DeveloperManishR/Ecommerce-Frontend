@@ -1,15 +1,17 @@
 import React from "react";
-import SideBar from "../Common/SideBar";
-import TopBar from "../Common/TopBar";
+import Header from "../Common/Header";
+import Footer from "../Common/Footer";
 
 export default function PrivateUserLayout({ children, activeSubMenu }) {
   return (
     <div class="flex  h-full w-full">
-      {/* <SideBar /> */}
+     
       <div className="w-[calc(100%-0px)] bg-lightgray  ml-[auto] side--content--area">
-        <TopBar />
+        <Header />
         {children}
+        <Footer/>
       </div>
+     
     </div>
   );
 }

@@ -115,7 +115,7 @@ const CommonHome = () => {
         </section>
 
 
-        <Footer/>
+       
 
      
       </div>
