@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { authAxios } from "../../../config/config";
+import { authAxios } from "../../config/config";
 import { RiShoppingBagLine } from "react-icons/ri";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { toast } from "react-toastify";
@@ -69,8 +69,6 @@ const Wishlist = () => {
               />
               <img
                 src={handleImage(item?.wishlist.images[0])}
-                
-
                 alt="Product"
                 className="h-80 w-72 object-cover rounded-t-xl"
               />
