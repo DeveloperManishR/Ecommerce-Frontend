@@ -5,6 +5,7 @@ import Signup from '../Common/Signup';
 import CommonHome from '../Common/CommonHome';
 import PrivateUserLayout from '../Layout/PrivateUserLayout';
 import Wishlist from "../Components/User/Wishlist"
+import UserHome from '../Components/User/UserHome';
 export const Routing = () => {
   return (
     <> 
@@ -12,8 +13,10 @@ export const Routing = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<PrivateUserLayout> <CommonHome /> </PrivateUserLayout> } />
-        <Route path="/wishlist" element={<PrivateUserLayout> <Wishlist /> </PrivateUserLayout> } />
+        <Route path="/" element={ <CommonHome /> } />
+        <Route path="/wishlist" element={<PrivateUserLayout> <UserHome /> </PrivateUserLayout> } />
+        <Route path="/home" element={<PrivateUserLayout> <Wishlist /> </PrivateUserLayout> } />
+
       
         
         </Routes>
