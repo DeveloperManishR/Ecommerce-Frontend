@@ -56,48 +56,80 @@ const Wishlist = () => {
 
   return (
     <div>
-      <div className="text-center p-10">
-        <h1 className="font-bold text-4xl mb-4">Wishlist Products</h1>
-      </div>
-
-      <section className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
-        {wishlistProducts.map((item) => (
-          <>
-            <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-              <IoIosCloseCircleOutline
-                onClick={() => removeWishlistProduct(item._id)}
-              />
-              <img
-                src={handleImage(item?.wishlist.images[0])}
-                alt="Product"
-                className="h-80 w-72 object-cover rounded-t-xl"
-              />
-
-              <div className="px-4 py-3 w-72">
-                <span className="text-gray-400 mr-3 uppercase text-xs">
-                  {item.wishlist.title}
-                </span>
-                <p className="text-lg font-bold text-black truncate block capitalize">
-                  Product Name
-                </p>
-                <div className="flex items-center">
-                  <p className="text-lg font-semibold text-black cursor-auto my-3">
-                    ${item.wishlist.price}
-                  </p>
-                  <del>
-                    <p className="text-sm text-gray-600 cursor-auto ml-2">
-                      ${item.wishlist.price}
-                    </p>
-                  </del>
-                  <div onClick={() => addTocart(item)} className="ml-auto">
-                    <RiShoppingBagLine className="text-4xl w-8 h-8" />
-                  </div>
-                </div>
-              </div>
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-semibold">Wishlist (4)</h2>
+          <button className="px-4 py-2 bg-white border border-gray-300 rounded shadow-sm">
+            Move All To Bag
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="border p-4 rounded shadow-sm relative">
+            <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+              -35%
+            </span>
+            <img
+              src="https://via.placeholder.com/200"
+              alt="Gucci duffle bag"
+              className="w-full h-48 object-cover mb-4"
+            />
+            <h3 className="text-lg font-semibold mb-2">Gucci duffle bag</h3>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-red-500 font-semibold">$960</span>
+              <span className="line-through text-gray-500">$1160</span>
             </div>
-          </>
-        ))}
-      </section>
+            <button className="w-full bg-black text-white py-2 rounded">
+              Add To Cart
+            </button>
+          </div>
+          <div className="border p-4 rounded shadow-sm relative">
+            <img
+              src="https://via.placeholder.com/200"
+              alt="RGB liquid CPU Cooler"
+              className="w-full h-48 object-cover mb-4"
+            />
+            <h3 className="text-lg font-semibold mb-2">
+              RGB liquid CPU Cooler
+            </h3>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-red-500 font-semibold">$1960</span>
+            </div>
+            <button className="w-full bg-black text-white py-2 rounded">
+              Add To Cart
+            </button>
+          </div>
+          <div className="border p-4 rounded shadow-sm relative">
+            <img
+              src="https://via.placeholder.com/200"
+              alt="GP11 Shooter USB Gamepad"
+              className="w-full h-48 object-cover mb-4"
+            />
+            <h3 className="text-lg font-semibold mb-2">
+              GP11 Shooter USB Gamepad
+            </h3>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-red-500 font-semibold">$550</span>
+            </div>
+            <button className="w-full bg-black text-white py-2 rounded">
+              Add To Cart
+            </button>
+          </div>
+          <div className="border p-4 rounded shadow-sm relative">
+            <img
+              src="https://via.placeholder.com/200"
+              alt="Quilted Satin Jacket"
+              className="w-full h-48 object-cover mb-4"
+            />
+            <h3 className="text-lg font-semibold mb-2">Quilted Satin Jacket</h3>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-red-500 font-semibold">$750</span>
+            </div>
+            <button className="w-full bg-black text-white py-2 rounded">
+              Add To Cart
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

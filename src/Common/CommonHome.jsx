@@ -6,6 +6,8 @@ import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
 import { handleImage } from "../../utils/helper";
 import Footer from "./Footer";
+import { FaHeart, FaChevronLeft, FaChevronRight, FaEye } from "react-icons/fa";
+import { AiFillStar } from "react-icons/ai";
 
 const CommonHome = () => {
   const navigate = useNavigate();
@@ -47,77 +49,42 @@ const CommonHome = () => {
     mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
   };
 
-  console.log(products);
   useEffect(() => {
     fetchAllproducts();
     fetchAllproductsCategory();
   }, []);
   return (
-    <div>
-      <div className="px-6">
-        <section className="p-6">
-          <h2 className="text-2xl font-bold mb-4">Flash Sales</h2>
-          <Carousel
-            responsive={responsive}
-            infinite={true}
-            autoPlay={true}
-            autoPlaySpeed={3000}
-          >
-            {products.map((product) => (
-              <div key={product.id} className="border p-4 rounded-lg w-60">
-                <div className="relative">
-                  <img
-                    src={handleImage(product?.images[0])}
-                    alt={product.name}
-                    className="w-full h-32 object-cover mb-2"
-                  />
-                  <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded">
-                    {product.discount}
-                  </span>
-                </div>
-                <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="text-red-500">
-                  {product.price}{" "}
-                  <span className="line-through">{product.oldPrice}</span>
-                </p>
-              </div>
-            ))}
-          </Carousel>
-          <div className="flex justify-center mt-4">
-            <button className="px-4 py-2 bg-red-500 text-white rounded-lg">
-              View All Products
-            </button>
+    <div className="bg-white shadow-md rounded-lg p-4 max-w-sm mx-auto">
+      <div className="relative">
+        <img
+          className="w-full h-48 object-cover rounded-lg"
+          src="https://images.unsplash.com/photo-1718627829230-a3f11114adb5?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Gamepad"
+        />
+        <span className="absolute top-2 left-2 bg-red-500 text-white text-sm font-semibold px-2 py-1 rounded-full">
+          -40%
+        </span>
+        <div className="absolute top-2 right-2 flex flex-col space-y-2">
+          <button className="text-white-500 hover:text-white-700">
+            <FaEye className="w-6 h-6" />
+          </button>
+          <button className="text-white-500 hover:text-white-700">
+            <FaHeart className="w-6 h-6" />
+          </button>
+        </div>
+      </div>
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold">HAVIT HV-G92 Gamepad</h3>
+        <div className="flex items-center mt-2">
+          <span className="text-red-600 text-xl font-bold">$120</span>
+          <span className="text-gray-500 line-through ml-2">$160</span>
+        </div>
+        <div className="flex items-center mt-2">
+          <div className="flex items-center">
+            <AiFillStar className="text-yellow-500" />
+            <span className="ml-1 text-sm text-gray-600">(88)</span>
           </div>
-        </section>
-
-        <section className="p-6">
-          <h2 className="text-2xl font-bold mb-4">Browse By Category</h2>
-          <Carousel
-            responsive={responsive}
-            infinite={true}
-            autoPlay={true}
-            autoPlaySpeed={3000}
-          >
-            {category.map((category) => (
-              <div
-                key={category?.id}
-                className="border p-4 rounded-lg flex flex-col items-center w-40"
-              >
-                <img
-                  src={category?.icon}
-                  alt={category?.name}
-                  className="w-16 h-16 mb-2"
-                />
-                <p>{category}</p>
-              </div>
-            ))}
-          </Carousel>
-        </section>
-
-
-       
-
-     
+        </div>
       </div>
     </div>
   );
