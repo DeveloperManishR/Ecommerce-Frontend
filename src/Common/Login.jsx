@@ -43,7 +43,7 @@ const Login = (props) => {
     console.log(payload)
 
     // setLoading(true);
-  /*  await withoutAuthAxios()
+    await withoutAuthAxios()
       .post("/auth/login", payload)
 
       .then((response) => {
@@ -53,7 +53,7 @@ const Login = (props) => {
           toast.success(resData?.message);
           dispatch(setuser(resData?.data?.user));
           dispatch(setAccessToken(resData?.data?.token));
-          navigate("/home");
+          navigate("/");
         } else {
           toast.error(resData.message);
         }
@@ -63,7 +63,7 @@ const Login = (props) => {
         toast.error(error.response.data.message);
       });
 
-      */
+      
   };
 
   return (

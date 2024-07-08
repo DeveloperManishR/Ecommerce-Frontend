@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <PersistGate persistor={persistor}>
       <ThemeProvider>
         <App />
-</ThemeProvider>
+      </ThemeProvider>
       </PersistGate>
     </Provider>
   </React.StrictMode>,

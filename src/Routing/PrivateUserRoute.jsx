@@ -4,8 +4,10 @@ import { Navigate } from "react-router-dom";
 import PrivateUserLayout from "../Layout/PrivateUserLayout";
 
 export default function PrivateUserRoute({ children }) {
-  const accessToken = "cdsfgsf"
- // const {accessToken}=useSelector((state)=>state.auth)
+//  const accessToken = "cdsfgsf"
+  const {accessToken}=useSelector((state)=>state.auth)
+
+  console.log("accessToken",accessToken)
 
   if (!accessToken) {
     return <Navigate to="/login" replace />;
