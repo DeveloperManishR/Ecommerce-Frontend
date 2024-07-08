@@ -10,7 +10,7 @@ export const withoutAuthAxios = () => {
 
 
 export const authAxios = () => {
-  //let token = store.getState().auth.accessToken;
+  let token = store.getState().auth.accessToken;
   return axios.create({
     baseURL: `${import.meta.env.VITE_REACT_APP_BASEURL}/api`,
     headers: {
