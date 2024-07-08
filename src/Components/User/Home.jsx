@@ -7,10 +7,15 @@ import { FaRegEye, FaRegStar, FaStar } from "react-icons/fa";
 import { LuArrowLeftRight } from "react-icons/lu";
 import { MdOutlineStarOutline } from "react-icons/md";
 import { toast } from "react-toastify";
+import ProductDetail from "../../Common/ProductDetail";
 const Home = () => {
   const [products, setproducts] = useState([]);
   const [category, setcategory] = useState([]);
   const [wishlistProducts, setwishlistProducts] = useState([]);
+  const [allmodel, setallmodel] = useState({
+    data: {},
+    showProductDetail: false,
+  });
 
   const fetchAllproducts = async () => {
     await withoutAuthAxios()
@@ -101,12 +106,9 @@ const Home = () => {
                       className="w-full h-full rounded-md object-cover group-hover:scale-110 duration-300"
                     />
                     <div className="absolute right-1 top-1 flex flex-col gap-1 transition translate-x-12 group-hover:translate-x-0 duration-300">
-                      <span
-                       
-                        className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200"
-                      >
-                       
-                        {wishlistProducts?.some(
+                      <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
+                        <FaRegStar onClick={() => addTowishlist(item._id)} />
+                        {/* {wishlistProducts?.some(
                           (job) => job?.wishlist._id == item?._id
                         ) ? (
                           <FaStar onClick={() => addTowishlist(item._id)} />
@@ -114,7 +116,7 @@ const Home = () => {
                           <FaRegStar
                             onClick={() => removeWishlistProduct(item._id)}
                           />
-                        )}
+                        )} */}
                       </span>
                       <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
                         <LuArrowLeftRight />
@@ -143,6 +145,10 @@ const Home = () => {
               </div>
             ))}
         </div>
+
+        {allmodel.showProductDetail && (
+          <ProductDetail allmodel={allmodel} setallmodel={setallmodel} />
+        )}
       </div>
     </div>
   );
