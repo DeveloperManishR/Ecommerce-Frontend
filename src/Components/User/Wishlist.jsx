@@ -34,7 +34,7 @@ const Wishlist = () => {
       .then((response) => {
         const resData = response.data;
 
-        toast.success(resData.message);
+     //   toast.success(resData.message);
         getAllwishlistProducts();
       })
       .catch((error) => {
@@ -54,14 +54,14 @@ const Wishlist = () => {
       .post(`/cart/add-to-cart/${item.wishlist._id}`)
       .then((response) => {
         removeWishlistProduct(item._id);
-        toast.success(response.data.message);
+     //   toast.success(response.data.message);
       })
       .catch((error) => {
         toast.error(error.response.data.message);
       });
   };
 
-  console.log(wishlistProducts)
+  
 
   useEffect(() => {
     getAllwishlistProducts();
