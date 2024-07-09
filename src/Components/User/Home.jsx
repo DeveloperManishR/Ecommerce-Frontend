@@ -81,6 +81,13 @@ const Home = () => {
         console.log(error);
       });
   };
+  const handleViewProduct=async(item)=>{
+    setallmodel((prev)=>({
+     ...prev,
+     showProductDetail:true,
+     data:item
+    }))
+   }
 
   useEffect(() => {
     fetchAllproducts();
@@ -121,7 +128,7 @@ const Home = () => {
                       <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
                         <LuArrowLeftRight />
                       </span>
-                      <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
+                      <span onClick={()=>handleViewProduct(item)} className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
                         <FaRegEye />
                       </span>
                     </div>
