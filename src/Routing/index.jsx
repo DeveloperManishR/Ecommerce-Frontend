@@ -5,6 +5,7 @@ import Signup from "../Common/Signup";
 import Home from "../Components/User/Home";
 import PrivateUserRoute from "./PrivateUserRoute";
 import Wishlist from "../Components/User/Wishlist";
+import Cart from "../Components/User/Cart";
 
 export const Routing = () => {
   return (
@@ -15,6 +16,7 @@ export const Routing = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/" element={ <PrivateUserRoute>    <Home /> </PrivateUserRoute>} />
           <Route path="/wishlist" element={ <PrivateUserRoute>    <Wishlist /> </PrivateUserRoute>} />
+          <Route path="/cart" element={ <PrivateUserRoute>    <Cart /> </PrivateUserRoute>} />
 
         </Routes>
       </Router>

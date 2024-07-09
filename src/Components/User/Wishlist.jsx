@@ -3,6 +3,8 @@ import ProductCard from "../../Common/ProductCard";
 import { authAxios } from "../../config/config";
 import { handleImage } from "../../utils/helper";
 import { FaRegEye, FaRegStar, FaStar } from "react-icons/fa";
+import { IoMdCart } from "react-icons/io";
+
 import { LuArrowLeftRight } from "react-icons/lu";
 import { MdOutlineStarOutline } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -47,6 +49,20 @@ const Wishlist = () => {
    }))
   }
 
+  const addTocart = async (item) => {
+    await authAxios()
+      .post(`/cart/add-to-cart/${item.wishlist._id}`)
+      .then((response) => {
+        removeWishlistProduct(item._id);
+        toast.success(response.data.message);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
+  };
+
+  console.log(wishlistProducts)
+
   useEffect(() => {
     getAllwishlistProducts();
   }, []);
@@ -64,7 +80,7 @@ const Wishlist = () => {
                 <div className="border border-gray-200 rounded-lg p-1 overflow-hidden hover:border-black duration-200 cursor-pointer">
                   <div className="w-full h-60 relative p-2 group">
                     <img
-                      src={handleImage(item.wishlist.images[0])}
+                      src={handleImage(item?.wishlist?.images[0])}
                       alt="productImage"
                       className="w-full h-full rounded-md object-cover group-hover:scale-110 duration-300"
                     />
@@ -79,6 +95,10 @@ const Wishlist = () => {
                       </span>
                       <span onClick={()=>handleViewProduct(item)} className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
                         <FaRegEye />
+                      </span>
+
+                      <span onClick={()=>addTocart(item)} className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
+                        <IoMdCart />
                       </span>
                     </div>
                   </div>

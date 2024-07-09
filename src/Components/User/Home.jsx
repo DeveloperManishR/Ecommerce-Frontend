@@ -89,6 +89,8 @@ const Home = () => {
     }))
    }
 
+   console.log("pro",products)
+
   useEffect(() => {
     fetchAllproducts();
     fetchAllproductsCategory();
