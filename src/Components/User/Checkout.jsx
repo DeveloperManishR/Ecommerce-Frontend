@@ -71,6 +71,7 @@ const Checkout = () => {
     await authAxios()
       .post("/order/create-order", payload)
       .then((response) => {
+        handleRemoveAllProductsFromCart(productArray)
         toast.success(response.data.message);
         navigate("/thank-you");
       })
@@ -78,6 +79,27 @@ const Checkout = () => {
         console.log("error", error);
       });
   };
+
+  const handleRemoveAllProductsFromCart=(productArray)=>{
+      // try {
+      //   const notificationIds = allUnreadNotifications.map(
+      //     (notification) => notification?._id
+      //   );
+  
+      //   await Promise.all(
+      //     notificationIds.map((notificationId) =>
+      //       authAxios().post(
+      //         `notifications/mark-notification-to-seen/${notificationId}`
+      //       )
+      //     )
+      //   );
+      //   setcurrentPage(1);
+  
+      //   handlefetchUnReadNotification(1);
+      // } catch (error) {
+       // console.error("Error marking all notifications as seen:", error);
+      
+  }
 
   useEffect(() => {
     getAllcartsProducts();

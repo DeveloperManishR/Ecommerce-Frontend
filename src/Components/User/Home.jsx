@@ -78,19 +78,19 @@ const Home = () => {
   };
 
   const removeWishlistProduct = async (id) => {
-    const ids = wishlistProducts.map((item) => item.wishlist._id == id);
+    const ids = wishlistProducts.find((item) => item.wishlist._id == id);
     console.log(ids);
-    // await authAxios()
-    //   .delete(`/wishlist/delete-wishlist-product/${id}`)
-    //   .then((response) => {
-    //     const resData = response.data;
+    await authAxios()
+      .delete(`/wishlist/delete-wishlist-product/${ids._id}`)
+      .then((response) => {
+        const resData = response.data;
 
-    //     toast.success(resData.message);
-    //     getAllwishlistProducts();
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+        toast.success(resData.message);
+        getAllwishlistProducts();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   const handleViewProduct = async (item) => {
     setallmodel((prev) => ({
@@ -100,7 +100,6 @@ const Home = () => {
     }));
   };
 
-  console.log(wishlistProducts);
   useEffect(() => {
     fetchAllproducts();
     //  fetchAllproductsCategory();
