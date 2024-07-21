@@ -12,6 +12,13 @@ const Home = () => {
   const [products, setproducts] = useState([]);
   const [category, setcategory] = useState([]);
   const [wishlistProducts, setwishlistProducts] = useState([]);
+  const [currentPage, setcurrentPage] = useState(1);
+  const [postsPerPage, setpostsPerPage] = useState(20);
+  const [totalPosts, settotalPosts] = useState(0);
+
+  const [currentImagedata, setcurrentImagedata] = useState({
+    data: "",
+  });
   const [allmodel, setallmodel] = useState({
     data: {},
     showProductDetail: false,
@@ -19,7 +26,9 @@ const Home = () => {
 
   const fetchAllproducts = async () => {
     await withoutAuthAxios()
-      .get("/product/get-all-products")
+      .get(
+        `/product/get-all-products/?page=${currentPage}&limit=${postsPerPage}`
+      )
       .then((response) => {
         const resData = response.data;
 
@@ -69,31 +78,32 @@ const Home = () => {
   };
 
   const removeWishlistProduct = async (id) => {
-    await authAxios()
-      .delete(`/wishlist/delete-wishlist-product/${id}`)
-      .then((response) => {
-        const resData = response.data;
+    const ids = wishlistProducts.map((item) => item.wishlist._id == id);
+    console.log(ids);
+    // await authAxios()
+    //   .delete(`/wishlist/delete-wishlist-product/${id}`)
+    //   .then((response) => {
+    //     const resData = response.data;
 
-        toast.success(resData.message);
-        getAllwishlistProducts();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    //     toast.success(resData.message);
+    //     getAllwishlistProducts();
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   };
-  const handleViewProduct=async(item)=>{
-    setallmodel((prev)=>({
-     ...prev,
-     showProductDetail:true,
-     data:item
-    }))
-   }
+  const handleViewProduct = async (item) => {
+    setallmodel((prev) => ({
+      ...prev,
+      showProductDetail: true,
+      data: item,
+    }));
+  };
 
-   console.log("pro",products)
-
+  console.log(wishlistProducts);
   useEffect(() => {
     fetchAllproducts();
-    fetchAllproductsCategory();
+    //  fetchAllproductsCategory();
     getAllwishlistProducts();
   }, []);
   return (
@@ -116,21 +126,24 @@ const Home = () => {
                     />
                     <div className="absolute right-1 top-1 flex flex-col gap-1 transition translate-x-12 group-hover:translate-x-0 duration-300">
                       <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
-                        <FaRegStar onClick={() => addTowishlist(item._id)} />
-                        {/* {wishlistProducts?.some(
+                        {/* <FaRegStar onClick={() => addTowishlist(item._id)} /> */}
+                        {wishlistProducts?.some(
                           (job) => job?.wishlist._id == item?._id
                         ) ? (
-                          <FaStar onClick={() => addTowishlist(item._id)} />
-                        ) : (
-                          <FaRegStar
+                          <FaStar
                             onClick={() => removeWishlistProduct(item._id)}
                           />
-                        )} */}
+                        ) : (
+                          <FaRegStar onClick={() => addTowishlist(item._id)} />
+                        )}
                       </span>
                       <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
                         <LuArrowLeftRight />
                       </span>
-                      <span onClick={()=>handleViewProduct(item)} className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
+                      <span
+                        onClick={() => handleViewProduct(item)}
+                        className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200"
+                      >
                         <FaRegEye />
                       </span>
                     </div>

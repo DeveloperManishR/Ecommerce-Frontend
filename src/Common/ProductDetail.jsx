@@ -1,8 +1,17 @@
-import React from "react";
 import { IoCloseSharp } from "react-icons/io5";
+import React from "react";
 
 const ProductDetail = ({ allmodel, setallmodel }) => {
-  console.log("alllmodel", allmodel);
+  console.log("allmodel", allmodel);
+
+  // Function to handle closing the modal
+  const closeModal = () => {
+    setallmodel((prev) => ({
+      ...prev,
+      showProductDetail: false,
+    }));
+  };
+
   return (
     <div
       className="relative z-10"
@@ -16,15 +25,20 @@ const ProductDetail = ({ allmodel, setallmodel }) => {
         <div className="flex min-h-full justify-center p-4 text-center items-center">
           <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-6xl">
             <div className="flex bg-white shadow-md rounded-xl w-full">
+              {/* Image Section */}
               <div className="w-2/5 overflow-hidden rounded-l-xl">
                 <img
-                src={allmodel.data.images[0]}
-                 // src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
-                  alt="card-image"
-                  className="object-cover w-full h-full"
+                  src={allmodel.data.images[0]}
+                  alt="Product"
+                  className="object-cover w-full h-full max-h- max-w-full"
                 />
               </div>
-              <div className="p-6">
+
+              {/* Product Details Section */}
+              <div className="p-6 relative w-3/5">
+                <button className="absolute top-4 right-4" onClick={closeModal}>
+                  <IoCloseSharp className="h-8 w-8 text-gray-700" />
+                </button>
                 <h6 className="mb-4 text-base font-semibold uppercase text-gray-700">
                   {allmodel?.data?.category}
                 </h6>
@@ -34,6 +48,7 @@ const ProductDetail = ({ allmodel, setallmodel }) => {
                 <p className="mb-8 text-base text-gray-700">
                   {allmodel?.data?.description}
                 </p>
+                {/* Uncomment if Learn More button is needed */}
                 {/* <a href="#" className="inline-block">
                   <button
                     className="flex items-center gap-2 px-6 py-3 text-xs font-bold uppercase text-gray-900 transition-all rounded-lg hover:bg-gray-900/10 active:bg-gray-900/20"
