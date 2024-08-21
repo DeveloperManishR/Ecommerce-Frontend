@@ -71,35 +71,24 @@ const Checkout = () => {
     await authAxios()
       .post("/order/create-order", payload)
       .then((response) => {
-        handleRemoveAllProductsFromCart(productArray)
+        handleRemoveAllProductsFromCart();
         toast.success(response.data.message);
-        navigate("/thank-you");
       })
       .catch((error) => {
         console.log("error", error);
       });
   };
 
-  const handleRemoveAllProductsFromCart=(productArray)=>{
-      // try {
-      //   const notificationIds = allUnreadNotifications.map(
-      //     (notification) => notification?._id
-      //   );
-  
-      //   await Promise.all(
-      //     notificationIds.map((notificationId) =>
-      //       authAxios().post(
-      //         `notifications/mark-notification-to-seen/${notificationId}`
-      //       )
-      //     )
-      //   );
-      //   setcurrentPage(1);
-  
-      //   handlefetchUnReadNotification(1);
-      // } catch (error) {
-       // console.error("Error marking all notifications as seen:", error);
-      
-  }
+  const handleRemoveAllProductsFromCart = async () => {
+    await authAxios()
+      .delete("/cart/all-products-remove")
+      .then((response) => {
+        navigate("/thank-you");
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
 
   useEffect(() => {
     getAllcartsProducts();

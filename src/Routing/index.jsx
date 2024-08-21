@@ -7,6 +7,7 @@ import PrivateUserRoute from "./PrivateUserRoute";
 import Wishlist from "../Components/User/Wishlist";
 import Cart from "../Components/User/Cart";
 import Checkout from "../Components/User/Checkout";
+import ThankyouPage from "../Common/ThankyouPage";
 
 export const Routing = () => {
   return (
@@ -48,6 +49,15 @@ export const Routing = () => {
               <PrivateUserRoute>
                 {" "}
                 <Checkout />{" "}
+              </PrivateUserRoute>
+            }
+          />
+          <Route
+            path="/thank-you"
+            element={
+              <PrivateUserRoute>
+                {" "}
+                <ThankyouPage />{" "}
               </PrivateUserRoute>
             }
           />
