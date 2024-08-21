@@ -73,7 +73,7 @@ const Home = () => {
         fetchAllproducts();
         getAllwishlistProducts();
 
-      //  toast.success(response.data.message);
+        //  toast.success(response.data.message);
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -88,7 +88,7 @@ const Home = () => {
       .then((response) => {
         const resData = response.data;
 
-       // toast.success(resData.message);
+        // toast.success(resData.message);
         getAllwishlistProducts();
       })
       .catch((error) => {
@@ -102,12 +102,12 @@ const Home = () => {
       data: item,
     }));
   };
-  
+
   const addTocart = async (item) => {
     await authAxios()
       .post(`/cart/add-to-cart/${item._id}`)
       .then((response) => {
-      //  removeWishlistProduct(item._id);
+        //  removeWishlistProduct(item._id);
         toast.success(response.data.message);
       })
       .catch((error) => {
@@ -133,12 +133,12 @@ const Home = () => {
               <div key={item.id} className="group relative">
                 <div className="border border-gray-200 rounded-lg p-1 overflow-hidden hover:border-black duration-200 cursor-pointer">
                   <div className="w-full h-60 relative p-2 group">
-                  <Link to={`/product-info/${item?._id}`}>
-                    <img
-                      src={handleImage(item.images[0])}
-                      alt="productImage"
-                      className="w-full h-full rounded-md object-cover group-hover:scale-110 duration-300"
-                    />
+                    <Link to={`/product-info/${item?._id}`}>
+                      <img
+                        src={handleImage(item.images[0])}
+                        alt="productImage"
+                        className="w-full h-full rounded-md object-cover group-hover:scale-110 duration-300"
+                      />
                     </Link>
                     <div className="absolute right-1 top-1 flex flex-col gap-1 transition translate-x-12 group-hover:translate-x-0 duration-300">
                       <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
@@ -161,7 +161,10 @@ const Home = () => {
                       >
                         <FaRegEye />
                       </span>
-                      <span onClick={()=>addTocart(item)} className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
+                      <span
+                        onClick={() => addTocart(item)}
+                        className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200"
+                      >
                         <IoMdCart />
                       </span>
                     </div>
