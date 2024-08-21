@@ -8,6 +8,9 @@ import Wishlist from "../Components/User/Wishlist";
 import Cart from "../Components/User/Cart";
 import Checkout from "../Components/User/Checkout";
 import ThankyouPage from "../Common/ThankyouPage";
+import Orders from "../Components/User/Orders";
+import ProductDetail from "../Common/ProductDetail";
+import ProductInfo from "../Common/ProductInfo";
 
 export const Routing = () => {
   return (
@@ -22,6 +25,15 @@ export const Routing = () => {
               <PrivateUserRoute>
                 {" "}
                 <Home />{" "}
+              </PrivateUserRoute>
+            }
+          />
+          <Route
+            path="/product-info/:id"
+            element={
+              <PrivateUserRoute>
+                {" "}
+                <ProductInfo />{" "}
               </PrivateUserRoute>
             }
           />
@@ -58,6 +70,15 @@ export const Routing = () => {
               <PrivateUserRoute>
                 {" "}
                 <ThankyouPage />{" "}
+              </PrivateUserRoute>
+            }
+          />
+           <Route
+            path="/orders"
+            element={
+              <PrivateUserRoute>
+                {" "}
+                <Orders />{" "}
               </PrivateUserRoute>
             }
           />
