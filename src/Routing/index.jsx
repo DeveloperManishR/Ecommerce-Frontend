@@ -15,11 +15,42 @@ export const Routing = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/" element={ <PrivateUserRoute>    <Home /> </PrivateUserRoute>} />
-          <Route path="/wishlist" element={ <PrivateUserRoute>    <Wishlist /> </PrivateUserRoute>} />
-          <Route path="/cart" element={ <PrivateUserRoute>    <Cart /> </PrivateUserRoute>} />
-          <Route path="/checkout" element={ <PrivateUserRoute>    <Checkout /> </PrivateUserRoute>} />
-
+          <Route
+            path="/"
+            element={
+              <PrivateUserRoute>
+                {" "}
+                <Home />{" "}
+              </PrivateUserRoute>
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <PrivateUserRoute>
+                {" "}
+                <Wishlist />{" "}
+              </PrivateUserRoute>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <PrivateUserRoute>
+                {" "}
+                <Cart />{" "}
+              </PrivateUserRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <PrivateUserRoute>
+                {" "}
+                <Checkout />{" "}
+              </PrivateUserRoute>
+            }
+          />
         </Routes>
       </Router>
     </>

@@ -8,6 +8,8 @@ import { LuArrowLeftRight } from "react-icons/lu";
 import { MdOutlineStarOutline } from "react-icons/md";
 import { toast } from "react-toastify";
 import ProductDetail from "../../Common/ProductDetail";
+import HomePageList from "../../Common/HomePageList";
+import { IoMdCart } from "react-icons/io";
 const Home = () => {
   const [products, setproducts] = useState([]);
   const [category, setcategory] = useState([]);
@@ -70,7 +72,7 @@ const Home = () => {
         fetchAllproducts();
         getAllwishlistProducts();
 
-        toast.success(response.data.message);
+      //  toast.success(response.data.message);
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -85,7 +87,7 @@ const Home = () => {
       .then((response) => {
         const resData = response.data;
 
-        toast.success(resData.message);
+       // toast.success(resData.message);
         getAllwishlistProducts();
       })
       .catch((error) => {
@@ -98,6 +100,18 @@ const Home = () => {
       showProductDetail: true,
       data: item,
     }));
+  };
+  
+  const addTocart = async (item) => {
+    await authAxios()
+      .post(`/cart/add-to-cart/${item._id}`)
+      .then((response) => {
+      //  removeWishlistProduct(item._id);
+        toast.success(response.data.message);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
   };
 
   useEffect(() => {
@@ -125,7 +139,6 @@ const Home = () => {
                     />
                     <div className="absolute right-1 top-1 flex flex-col gap-1 transition translate-x-12 group-hover:translate-x-0 duration-300">
                       <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
-                        {/* <FaRegStar onClick={() => addTowishlist(item._id)} /> */}
                         {wishlistProducts?.some(
                           (job) => job?.wishlist._id == item?._id
                         ) ? (
@@ -144,6 +157,9 @@ const Home = () => {
                         className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200"
                       >
                         <FaRegEye />
+                      </span>
+                      <span onClick={()=>addTocart(item)} className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
+                        <IoMdCart />
                       </span>
                     </div>
                   </div>
@@ -166,6 +182,8 @@ const Home = () => {
               </div>
             ))}
         </div>
+
+        {/* <HomePageList/> */}
 
         {allmodel.showProductDetail && (
           <ProductDetail allmodel={allmodel} setallmodel={setallmodel} />
