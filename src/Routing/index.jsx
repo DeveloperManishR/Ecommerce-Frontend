@@ -11,23 +11,43 @@ import ThankyouPage from "../Common/ThankyouPage";
 import Orders from "../Components/User/Orders";
 import ProductDetail from "../Common/ProductDetail";
 import ProductInfo from "../Common/ProductInfo";
-
+import { useSelector } from "react-redux";
+import PrivateAdminRoute from "./PrivateAdminRoute";
+import AdminHome from "../Components/Admin/Home"
 export const Routing = () => {
+  const userRole = useSelector((state) => state.auth.user.role);
   return (
     <>
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route
-            path="/"
-            element={
-              <PrivateUserRoute>
-                {" "}
-                <Home />{" "}
-              </PrivateUserRoute>
-            }
-          />
+          {userRole == "USER" ? (
+            <Route
+              path="/"
+              element={
+                <PrivateUserRoute>
+                  {" "}
+                  <Home />{" "}
+                </PrivateUserRoute>
+              }
+            />
+          ) : userRole == "ADMIN" ? (
+            <Route
+              path="/"
+              element={
+                <PrivateAdminRoute>
+                  {" "}
+                  <AdminHome />{" "}
+                </PrivateAdminRoute>
+              }
+            />
+          ) : (
+            <>
+            
+            </>
+          )}
+
           <Route
             path="/product-info/:id"
             element={
@@ -73,7 +93,7 @@ export const Routing = () => {
               </PrivateUserRoute>
             }
           />
-           <Route
+          <Route
             path="/orders"
             element={
               <PrivateUserRoute>
