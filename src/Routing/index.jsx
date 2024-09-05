@@ -13,7 +13,12 @@ import ProductDetail from "../Common/ProductDetail";
 import ProductInfo from "../Common/ProductInfo";
 import { useSelector } from "react-redux";
 import PrivateAdminRoute from "./PrivateAdminRoute";
-import AdminHome from "../Components/Admin/Home"
+import AdminHome from "../Components/Admin/Home";
+import AOrders from "../Components/Admin/Orders";
+import Products from "../Components/Admin/Products";
+import AdminOrders from "../Components/Admin/Orders";
+import Users from "../Components/Admin/Users";
+
 export const Routing = () => {
   const userRole = useSelector((state) => state.auth.user.role);
   return (
@@ -43,9 +48,7 @@ export const Routing = () => {
               }
             />
           ) : (
-            <>
-            
-            </>
+            <></>
           )}
 
           <Route
@@ -57,6 +60,39 @@ export const Routing = () => {
               </PrivateUserRoute>
             }
           />
+
+          <Route
+            path="/all-users"
+            element={
+              <PrivateAdminRoute>
+                {" "}
+                <Users />{" "}
+              </PrivateAdminRoute>
+            }
+          />
+
+          <Route
+            path="/user-orders"
+            element={
+              <PrivateAdminRoute>
+                {" "}
+                <AdminOrders />{" "}
+              </PrivateAdminRoute>
+            }
+          />
+
+<Route
+            path="/all-products"
+            element={
+              <PrivateAdminRoute>
+                {" "}
+                <Products />{" "}
+              </PrivateAdminRoute>
+            }
+          />
+
+
+
           <Route
             path="/wishlist"
             element={
@@ -102,6 +138,7 @@ export const Routing = () => {
               </PrivateUserRoute>
             }
           />
+         
         </Routes>
       </Router>
     </>
