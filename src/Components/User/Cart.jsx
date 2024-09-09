@@ -43,7 +43,7 @@ const Cart = () => {
       .post(`/cart/add-to-cart/${item?.product?._id}`)
       .then((response) => {
         getAllcartsProducts();
-        toast.success(response.data.message);
+        //  toast.success(response.data.message);
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -55,7 +55,7 @@ const Cart = () => {
       .put(`/cart/decrease-product-quantity/${item?.product?._id}`)
       .then((response) => {
         getAllcartsProducts();
-        toast.success(response.data.message);
+        // toast.success(response.data.message);
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -102,8 +102,7 @@ const Cart = () => {
                       <img
                         className="h-24"
                         src={handleImage(item?.product?.images[0])}
-                        
-                       // src={`${process.env.REACT_APP_BASEURL}/${item?.product?.photos[0]}`}
+                        // src={`${process.env.REACT_APP_BASEURL}/${item?.product?.photos[0]}`}
                         alt=""
                       />
                     </div>
@@ -149,7 +148,7 @@ const Cart = () => {
                     ${item?.product?.price}
                   </span>
                   <span className="text-center w-1/5 font-semibold text-sm">
-                    ${item?.product?.price * item?.quantity}
+                    ${Math.round(item?.product?.price * item?.quantity)}
                   </span>
                 </div>
               ))}

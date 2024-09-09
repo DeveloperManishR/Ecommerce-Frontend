@@ -2,26 +2,7 @@ import React, { useEffect, useState } from "react";
 import { authAxios } from "../../config/config";
 import { dateFormat } from "../../utils/helper";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-
-const orders = [
-  {
-    id: "#3210",
-    customer: "Olivia Martin",
-    channel: "Online Store",
-    date: "February 20, 2022",
-    total: "$42.25",
-    status: "Shipped",
-  },
-  {
-    id: "#3209",
-    customer: "Ava Johnson",
-    channel: "Shop",
-    date: "January 5, 2022",
-    total: "$74.99",
-    status: "Paid",
-  },
-  // More orders...
-];
+import { toast } from "react-toastify";
 
 const AOrders = () => {
   const [allOrders, setallOrders] = useState([]);
@@ -40,11 +21,12 @@ const AOrders = () => {
       });
   };
 
-  const handleUpdateOrder = async (data,id) => {
+  const handleUpdateOrder = async (data, id) => {
     await authAxios()
-      .put(`/order/update-order`, { status: data,orderId:id })
+      .put(`/order/update-order`, { status: data, orderId: id })
       .then((response) => {
-        console.log(response)
+        toast.success(response.data.message);
+        getAllOrder();
       })
       .catch((error) => {
         console.log(error);
@@ -87,7 +69,7 @@ const AOrders = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {allOrders &&
-              allOrders.map((item) => (
+              allOrders.map((item, index) => (
                 <>
                   {item.orderItems.map((order, newIndex) => (
                     <>
@@ -105,7 +87,17 @@ const AOrders = () => {
                         <td className="px-6 py-4 whitespace-nowrap">
                           {item?.paymentStatus}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td
+                          className={`px-6 py-4 whitespace-nowrap ${
+                            order.orderStatus === "pending"
+                              ? "text-brown-300"
+                              : order.orderStatus === "Dispatch"
+                              ? "text-blue-300"
+                              : order.orderStatus === "Completed"
+                              ? "text-green-300"
+                              : ""
+                          }`}
+                        >
                           {order?.orderStatus}
                         </td>
 
@@ -139,23 +131,33 @@ const AOrders = () => {
                             >
                               <div className="py-1">
                                 <MenuItem>
-                                  <li onClick={()=>handleUpdateOrder("dispatch",order._id)} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900">
-                                    View
-                                  </li>
-                                </MenuItem>
-                                <MenuItem>
-                                  <li onClick={()=>handleUpdateOrder("completed")} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900">
-                                    Edit
+                                  <li
+                                    onClick={() =>
+                                      handleUpdateOrder("Dispatch", order._id)
+                                    }
+                                    className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+                                  >
+                                    Dispatch
                                   </li>
                                 </MenuItem>
                                 <MenuItem>
                                   <li
-                                    // onClick={() => handleDeleteProduct(item._id)}
+                                    onClick={() =>
+                                      handleUpdateOrder("Completed", order._id)
+                                    }
+                                    className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+                                  >
+                                    Completed
+                                  </li>
+                                </MenuItem>
+                                {/* <MenuItem>
+                                  <li
+                                  
                                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
                                   >
                                     Delete
                                   </li>
-                                </MenuItem>
+                                </MenuItem> */}
                               </div>
                             </MenuItems>
                           </Menu>
