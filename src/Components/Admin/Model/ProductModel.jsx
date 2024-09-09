@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
-const ProductModel = ({ addProduct, setshowaddProduct,handleAddProduct }) => {
+const ProductModel = ({ addProduct, setshowaddProduct,handleAddProduct,setmodel }) => {
   const [formData, setformData] = useState({
     title: "",
     category: "",
@@ -64,7 +64,8 @@ const ProductModel = ({ addProduct, setshowaddProduct,handleAddProduct }) => {
 
                 <div
                   className="close cursor-pointer text-[20px]"
-                  onClick={handleclose}
+                  onClick={() => setmodel((prev) => ({ ...prev, show: false }))}
+
                 >
                   <IoCloseSharp />
                 </div>

@@ -39,6 +39,17 @@ const AOrders = () => {
         console.log(error);
       });
   };
+
+  const handleUpdateOrder = async (data,id) => {
+    await authAxios()
+      .put(`/order/update-order`, { status: data,orderId:id })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
     getAllOrder();
   }, []);
@@ -128,12 +139,12 @@ const AOrders = () => {
                             >
                               <div className="py-1">
                                 <MenuItem>
-                                  <li className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900">
+                                  <li onClick={()=>handleUpdateOrder("dispatch",order._id)} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900">
                                     View
                                   </li>
                                 </MenuItem>
                                 <MenuItem>
-                                  <li className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900">
+                                  <li onClick={()=>handleUpdateOrder("completed")} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900">
                                     Edit
                                   </li>
                                 </MenuItem>
