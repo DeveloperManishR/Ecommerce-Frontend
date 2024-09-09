@@ -30,11 +30,11 @@ const ProductDetail = ({ allmodel, setallmodel }) => {
                 <img
                   src={allmodel.data.images[0]}
                   alt="Product"
-                  className="object-cover w-full h-full max-h- max-w-full"
+                  className=""
                 />
               </div>
 
-              {/* Product Details Section */}
+             
               <div className="p-6 relative w-3/5">
                 <button className="absolute top-4 right-4" onClick={closeModal}>
                   <IoCloseSharp className="h-8 w-8 text-gray-700" />
@@ -48,6 +48,8 @@ const ProductDetail = ({ allmodel, setallmodel }) => {
                 <p className="mb-8 text-base text-gray-700">
                   {allmodel?.data?.description}
                 </p>
+
+                
                 {/* Uncomment if Learn More button is needed */}
                 {/* <a href="#" className="inline-block">
                   <button

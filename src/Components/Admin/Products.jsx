@@ -10,11 +10,17 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import ProductModel from "./Model/ProductModel";
 import { toast } from "react-toastify";
+import ProductDetail from "../../Common/ProductDetail";
 const Products = () => {
   const [products, setproducts] = useState([]);
 
   const [model, setmodel] = useState({
     show: false,
+  });
+
+  const [allmodel, setallmodel] = useState({
+    data: {},
+    showProductDetail: false,
   });
 
   const fetchAllproducts = async () => {
@@ -64,7 +70,7 @@ const Products = () => {
       .then((response) => {
         const resData = response.data;
         toast.success(resData.message);
-        fetchAllproducts()
+        fetchAllproducts();
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -163,12 +169,20 @@ const Products = () => {
                         className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                       >
                         <div className="py-1">
-                          <MenuItem>
+                          <MenuItem
+                            onClick={() =>
+                              setallmodel((prev) => ({
+                                ...prev,
+                                showProductDetail: true,
+                                data: item,
+                              }))
+                            }
+                          >
                             <li className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900">
                               View
                             </li>
                           </MenuItem>
-                          <MenuItem>
+                          <MenuItem  >
                             <li className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900">
                               Edit
                             </li>
@@ -197,6 +211,10 @@ const Products = () => {
           model={model}
           handleAddProduct={handleAddProduct}
         />
+      )}
+
+      {allmodel.showProductDetail && (
+        <ProductDetail allmodel={allmodel} setallmodel={setallmodel} />
       )}
     </div>
   );
