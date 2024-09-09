@@ -43,7 +43,7 @@ const Checkout = () => {
         setproductDetails((prev) => ({
           ...prev,
           product: resData.data,
-          totalAmount: totalAmount,
+          totalAmount: Math.round(totalAmount),
         }));
       })
       .catch((error) => {
@@ -51,20 +51,37 @@ const Checkout = () => {
       });
   };
 
+
+  console.log(productDetails.totalAmount)
+
   const handleOrderSubmit = async () => {
+    
+ console.log(productDetails)
     const productArray = [];
-
+  
     productDetails.product.map((item) => {
-      productArray.push({ product: item.product._id, quantity: item.quantity });
+      productArray.push({ product: item.product._id, quantity: item?.quantity,price:item?.product?.price });
     });
-
+/*
+{
+    "orderItems": [
+      { "product": "65fc188931086695ee5eee13", "quantity": 2, "price": 25 },
+      { "product": "65fc2d889745abc1f7e1d6ca", "quantity": 1, "price": 14 }
+    ],
+    "totalAmount": 150,
+    "userid": "65fc14dc00e8d2031d27686d",
+    "paymentMethod": "CARD",
+    "paymentStatus": "pending",
+    "orderStatus": "pending",
+    "selectedAddress": "123 Main Street"
+  }
+    */
     const payload = {
-      products: productArray,
+      orderItems: productArray,
       totalAmount: productDetails.totalAmount,
       userid: UserId,
       paymentMethod: show,
       paymentStatus: "pending",
-      orderStatus: "pending",
       selectedAddress: data.selectedAddress,
     };
 
