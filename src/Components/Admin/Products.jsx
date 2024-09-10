@@ -16,6 +16,7 @@ const Products = () => {
 
   const [model, setmodel] = useState({
     show: false,
+    data: [],
   });
 
   const [allmodel, setallmodel] = useState({
@@ -64,6 +65,30 @@ const Products = () => {
       });
   };
 
+  const handleEditProduct = async (data) => {
+
+    console.log("data",data)
+    // const formData = new FormData();
+    
+
+    // formData.append("title", data.title);
+    // formData.append("category", data.category);
+    // formData.append("description", data.description);
+    // formData.append("price", data.price);
+    // formData.append("stock", data.stock);
+
+    // await authAxios()
+    //   .put(`/product/update-product/${model?.data?._id}`, formData)
+    //   .then((response) => {
+    //     const resData = response.data;
+    //     toast.success(resData.message);
+    //     fetchAllproducts();
+    //   })
+    //   .catch((error) => {
+    //     toast.error(error.response.data.message);
+    //   });
+  };
+
   const handleDeleteProduct = async (id) => {
     await authAxios()
       .delete(`/product/delete-product/${id}`)
@@ -78,7 +103,6 @@ const Products = () => {
   };
 
   const [currentDropdown, setcurrentDropdown] = useState([]);
-  const handleEditProduct = () => {};
 
   console.log("curr", currentDropdown);
 
@@ -182,7 +206,15 @@ const Products = () => {
                               View
                             </li>
                           </MenuItem>
-                          <MenuItem  >
+                          <MenuItem
+                            onClick={() =>
+                              setmodel((prev) => ({
+                                ...prev,
+                                show: true,
+                                data: item,
+                              }))
+                            }
+                          >
                             <li className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900">
                               Edit
                             </li>
@@ -210,6 +242,7 @@ const Products = () => {
           setmodel={setmodel}
           model={model}
           handleAddProduct={handleAddProduct}
+          handleEditProduct={handleEditProduct}
         />
       )}
 
