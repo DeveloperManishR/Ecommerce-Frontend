@@ -51,7 +51,15 @@ export const Routing = () => {
             />
           ) : (
             <>
-              <Route path="/" element={<NormalUserLayout> <NormalUserHome />  </NormalUserLayout>} />
+              <Route
+                path="/"
+                element={
+                  <NormalUserLayout>
+                    {" "}
+                    <NormalUserHome />{" "}
+                  </NormalUserLayout>
+                }
+              />
             </>
           )}
 

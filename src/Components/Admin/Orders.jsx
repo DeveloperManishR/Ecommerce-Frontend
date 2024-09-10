@@ -73,7 +73,7 @@ const AOrders = () => {
                 <>
                   {item.orderItems.map((order, newIndex) => (
                     <>
-                      <tr key={item?.id}>
+                      <tr key={item?.id} >
                         <td className="px-6 py-4 whitespace-nowrap"></td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           {item?.userid.fname} {item?.userid.lname}
@@ -88,7 +88,7 @@ const AOrders = () => {
                           {item?.paymentStatus}
                         </td>
                         <td
-                          className={`px-6 py-4 whitespace-nowrap ${
+                          className={`  px-6 py-24  whitespace-nowrap ${
                             order.orderStatus === "pending"
                               ? "text-brown-300"
                               : order.orderStatus === "dispatch"

@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { authAxios } from "../../config/config";
 import { dateFormat } from "../../utils/helper";
+import ReviewModel from "../../Common/ReviewModel";
+import { useSelector } from "react-redux";
 
 const Orders = () => {
+  const userId = useSelector((state) => state.auth.user.id);
+
   const [allOrders, setallOrders] = useState([]);
 
   const [currentTab, setcurrentTab] = useState("all");
 
+  const [allmodel, setallmodel] = useState({
+    show: false,
+    rating: 0,
+    comment: "",
+    product: "",
+    orderItemid: "",
+  });
+
   const getAllOrder = async (data) => {
-    if(data){
-      setcurrentTab(data)
+    if (data) {
+      setcurrentTab(data);
     }
     await authAxios()
       .get(`/order/users-get-all-orders`)
@@ -23,7 +35,6 @@ const Orders = () => {
   };
 
   const filterOrder = async (data) => {
-    
     setcurrentTab(data);
     console.log("data", data);
 
@@ -36,6 +47,31 @@ const Orders = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleSubmitReview = async () => {
+    const payload = {
+      rating: allmodel.rating,
+      comment: allmodel.comment,
+      product: allmodel.product,
+      orderItemid: allmodel.orderItemid,
+      userid: userId,
+    };
+
+    console.log(payload);
+    await authAxios()
+      .post(`/review/add-product-review`, payload)
+      .then((response) => {
+        setallmodel((prev) => ({
+          ...prev,
+          show: false,
+          rating: 0,
+          comment: "",
+          product: "",
+          orderItemid: "",
+        }));
+      })
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -53,24 +89,35 @@ const Orders = () => {
         </h2>
         <div className="flex sm:flex-col lg:flex-row sm:items-center justify-between">
           <ul className="flex max-sm:flex-col sm:items-center gap-x-14 gap-y-3">
-            <li onClick={() => getAllOrder("all")}   className={`font-medium text-lg leading-8 cursor-pointer ${currentTab=="all"?"text-indigo-600":"text-black"}  transition-all duration-500 hover:text-indigo-600`}>
+            <li
+              onClick={() => getAllOrder("all")}
+              className={`font-medium text-lg leading-8 cursor-pointer ${
+                currentTab == "all" ? "text-indigo-600" : "text-black"
+              }  transition-all duration-500 hover:text-indigo-600`}
+            >
               All Order
             </li>
             <li
               onClick={() => filterOrder("pending")}
-              className={`font-medium text-lg leading-8 cursor-pointer ${currentTab=="pending"?"text-indigo-600":"text-black"} transition-all duration-500 hover:text-indigo-600`}
+              className={`font-medium text-lg leading-8 cursor-pointer ${
+                currentTab == "pending" ? "text-indigo-600" : "text-black"
+              } transition-all duration-500 hover:text-indigo-600`}
             >
               Pending
             </li>
             <li
               onClick={() => filterOrder("dispatch")}
-              className={`font-medium text-lg leading-8 cursor-pointer ${currentTab=="dispatch"?"text-indigo-600":"text-black"} transition-all duration-500 hover:text-indigo-600`}
+              className={`font-medium text-lg leading-8 cursor-pointer ${
+                currentTab == "dispatch" ? "text-indigo-600" : "text-black"
+              } transition-all duration-500 hover:text-indigo-600`}
             >
               Dispatched
             </li>
             <li
               onClick={() => filterOrder("completed")}
-              className={`font-medium text-lg leading-8 cursor-pointer${currentTab=="completed"?"text-indigo-600":"text-black"} transition-all duration-500 hover:text-indigo-600`}
+              className={`font-medium text-lg leading-8 cursor-pointer${
+                currentTab == "completed" ? "text-indigo-600" : "text-black"
+              } transition-all duration-500 hover:text-indigo-600`}
             >
               Completed
             </li>
@@ -140,6 +187,42 @@ const Orders = () => {
                             </p>
                           </div>
                         </div>
+
+                        {order.orderStatus == "completed" &&
+                          order.reviewid == null && (
+                            <button
+                              onClick={() =>
+                                setallmodel((prev) => ({
+                                  ...prev,
+                                  show: true,
+                                  product: order.product._id,
+                                  orderItemid: order._id,
+                                }))
+                              }
+                              className="bg-black text-white"
+                            >
+                              {" "}
+                              Add Review
+                            </button>
+                          )}
+
+                        {order.orderStatus == "completed" && order.reviewid && (
+                          <button
+                            onClick={() =>
+                              setallmodel((prev) => ({
+                                ...prev,
+                                show: true,
+                                product: order.product._id,
+                                orderItemid: order._id,
+                              }))
+                            }
+                            className="bg-black text-white"
+                          >
+                            {" "}
+                            View Review
+                          </button>
+                        )}
+                        <div></div>
                       </div>
                       <div className="flex items-center justify-around w-full  sm:pl-28 lg:pl-0">
                         <div className="flex flex-col justify-center items-start max-sm:items-center">
@@ -182,6 +265,14 @@ const Orders = () => {
               </>
             ))}
         </div>
+
+        {allmodel.show && (
+          <ReviewModel
+            allmodel={allmodel}
+            setallmodel={setallmodel}
+            handleSubmitReview={handleSubmitReview}
+          />
+        )}
       </div>
     </section>
   );
