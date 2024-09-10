@@ -91,9 +91,9 @@ const AOrders = () => {
                           className={`px-6 py-4 whitespace-nowrap ${
                             order.orderStatus === "pending"
                               ? "text-brown-300"
-                              : order.orderStatus === "Dispatch"
+                              : order.orderStatus === "dispatch"
                               ? "text-blue-300"
-                              : order.orderStatus === "Completed"
+                              : order.orderStatus === "completed"
                               ? "text-green-300"
                               : ""
                           }`}
@@ -133,7 +133,7 @@ const AOrders = () => {
                                 <MenuItem>
                                   <li
                                     onClick={() =>
-                                      handleUpdateOrder("Dispatch", order._id)
+                                      handleUpdateOrder("dispatch", order._id)
                                     }
                                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
                                   >
@@ -143,7 +143,7 @@ const AOrders = () => {
                                 <MenuItem>
                                   <li
                                     onClick={() =>
-                                      handleUpdateOrder("Completed", order._id)
+                                      handleUpdateOrder("completed", order._id)
                                     }
                                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
                                   >

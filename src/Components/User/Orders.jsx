@@ -3,11 +3,14 @@ import { authAxios } from "../../config/config";
 import { dateFormat } from "../../utils/helper";
 
 const Orders = () => {
-  
-
   const [allOrders, setallOrders] = useState([]);
 
-  const getAllOrder = async () => {
+  const [currentTab, setcurrentTab] = useState("all");
+
+  const getAllOrder = async (data) => {
+    if(data){
+      setcurrentTab(data)
+    }
     await authAxios()
       .get(`/order/users-get-all-orders`)
       .then((response) => {
@@ -18,6 +21,23 @@ const Orders = () => {
         console.log(error);
       });
   };
+
+  const filterOrder = async (data) => {
+    
+    setcurrentTab(data);
+    console.log("data", data);
+
+    await authAxios()
+      .post(`/order/filter-product`, { orderStatus: data })
+      .then((response) => {
+        const resData = response.data;
+        setallOrders(resData.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     getAllOrder();
   }, []);
@@ -33,20 +53,28 @@ const Orders = () => {
         </h2>
         <div className="flex sm:flex-col lg:flex-row sm:items-center justify-between">
           <ul className="flex max-sm:flex-col sm:items-center gap-x-14 gap-y-3">
-            <li className="font-medium text-lg leading-8 cursor-pointer text-indigo-600 transition-all duration-500 hover:text-indigo-600">
+            <li onClick={() => getAllOrder("all")}   className={`font-medium text-lg leading-8 cursor-pointer ${currentTab=="all"?"text-indigo-600":"text-black"}  transition-all duration-500 hover:text-indigo-600`}>
               All Order
             </li>
-            <li className="font-medium text-lg leading-8 cursor-pointer text-black transition-all duration-500 hover:text-indigo-600">
-              Summary
+            <li
+              onClick={() => filterOrder("pending")}
+              className={`font-medium text-lg leading-8 cursor-pointer ${currentTab=="pending"?"text-indigo-600":"text-black"} transition-all duration-500 hover:text-indigo-600`}
+            >
+              Pending
             </li>
-            <li className="font-medium text-lg leading-8 cursor-pointer text-black transition-all duration-500 hover:text-indigo-600">
+            <li
+              onClick={() => filterOrder("dispatch")}
+              className={`font-medium text-lg leading-8 cursor-pointer ${currentTab=="dispatch"?"text-indigo-600":"text-black"} transition-all duration-500 hover:text-indigo-600`}
+            >
+              Dispatched
+            </li>
+            <li
+              onClick={() => filterOrder("completed")}
+              className={`font-medium text-lg leading-8 cursor-pointer${currentTab=="completed"?"text-indigo-600":"text-black"} transition-all duration-500 hover:text-indigo-600`}
+            >
               Completed
             </li>
-            <li className="font-medium text-lg leading-8 cursor-pointer text-black transition-all duration-500 hover:text-indigo-600">
-              Cancelled
-            </li>
           </ul>
-          
         </div>
         <div className="mt-7 border border-gray-300 pt-9">
           {allOrders &&
@@ -118,7 +146,13 @@ const Orders = () => {
                           <p className="font-normal text-lg text-gray-500 leading-8 mb-2 text-left whitespace-nowrap">
                             Order Status
                           </p>
-                          <p className={`font-bold text-lg leading-8 ${order.orderStatus=="pending" ? "text-yellow-400":"text-green-500" }  text-left whitespace-nowrap`}>
+                          <p
+                            className={`font-bold text-lg leading-8 ${
+                              order.orderStatus == "pending"
+                                ? "text-yellow-400"
+                                : "text-green-500"
+                            }  text-left whitespace-nowrap`}
+                          >
                             {order.orderStatus}
                           </p>
                         </div>

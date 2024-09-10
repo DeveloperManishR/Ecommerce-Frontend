@@ -68,25 +68,25 @@ const Products = () => {
   const handleEditProduct = async (data) => {
 
     console.log("data",data)
-    // const formData = new FormData();
+    const formData = new FormData();
     
 
-    // formData.append("title", data.title);
-    // formData.append("category", data.category);
-    // formData.append("description", data.description);
-    // formData.append("price", data.price);
-    // formData.append("stock", data.stock);
+    formData.append("title", data.title);
+    formData.append("category", data.category);
+    formData.append("description", data.description);
+    formData.append("price", data.price);
+    formData.append("stock", data.stock);
 
-    // await authAxios()
-    //   .put(`/product/update-product/${model?.data?._id}`, formData)
-    //   .then((response) => {
-    //     const resData = response.data;
-    //     toast.success(resData.message);
-    //     fetchAllproducts();
-    //   })
-    //   .catch((error) => {
-    //     toast.error(error.response.data.message);
-    //   });
+    await authAxios()
+      .put(`/product/update-product/${model?.data?._id}`, formData)
+      .then((response) => {
+        const resData = response.data;
+        toast.success(resData.message);
+        fetchAllproducts();
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
   };
 
   const handleDeleteProduct = async (id) => {
