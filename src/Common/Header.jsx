@@ -38,7 +38,7 @@ const Header = () => {
   const handleLogout=()=>{
     dispatch(logout())
     toast.success('Logout Successfully')
-    navigate("/")
+    navigate("/login")
   }
   return (
     <Disclosure as="nav" className="bg-black">

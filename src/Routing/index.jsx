@@ -18,6 +18,8 @@ import AOrders from "../Components/Admin/Orders";
 import Products from "../Components/Admin/Products";
 import AdminOrders from "../Components/Admin/Orders";
 import Users from "../Components/Admin/Users";
+import NormalUserLayout from "../Layout/NormalUserLayout";
+import NormalUserHome from "../Components/NormalUser/NormalUserHome";
 
 export const Routing = () => {
   const userRole = useSelector((state) => state.auth.user.role);
@@ -48,7 +50,9 @@ export const Routing = () => {
               }
             />
           ) : (
-            <></>
+            <>
+              <Route path="/" element={<NormalUserLayout> <NormalUserHome />  </NormalUserLayout>} />
+            </>
           )}
 
           <Route
@@ -81,7 +85,7 @@ export const Routing = () => {
             }
           />
 
-<Route
+          <Route
             path="/all-products"
             element={
               <PrivateAdminRoute>
@@ -90,8 +94,6 @@ export const Routing = () => {
               </PrivateAdminRoute>
             }
           />
-
-
 
           <Route
             path="/wishlist"
@@ -138,7 +140,6 @@ export const Routing = () => {
               </PrivateUserRoute>
             }
           />
-         
         </Routes>
       </Router>
     </>
