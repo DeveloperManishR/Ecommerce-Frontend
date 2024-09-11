@@ -5,8 +5,11 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { handleImage } from "../../utils/helper";
-
+import { useSocket } from "../../config/SocketContext";
 const Checkout = () => {
+
+  const socket=useSocket()
+
   const [show, setshow] = useState("");
 
   const navigate = useNavigate();
@@ -86,6 +89,7 @@ const Checkout = () => {
       .then((response) => {
         handleRemoveAllProductsFromCart();
         toast.success(response.data.message);
+        socket.emit("newOrder",response.data)
       })
       .catch((error) => {
         console.log("error", error);

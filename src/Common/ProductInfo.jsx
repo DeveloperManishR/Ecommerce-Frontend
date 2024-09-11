@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { authAxios } from "../config/config";
 import { dateFormat } from "../utils/helper";
+import { Rating } from "react-simple-star-rating";
+import DynamicRating from "./DynamicRating";
 
 const ProductInfo = () => {
   const [ProductDetail, setProductDetail] = useState([]);
@@ -88,7 +90,7 @@ const ProductInfo = () => {
             </div>
 
             <div className="flex space-x-2 mt-4">
-              <svg
+              {/* <svg
                 className="w-5 fill-orange-400"
                 viewBox="0 0 14 13"
                 fill="none"
@@ -127,7 +129,8 @@ const ProductInfo = () => {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-              </svg>
+              </svg> */}
+               <DynamicRating  rating={ProductDetail.rating}  />
             </div>
 
             <div className="mt-8">
@@ -259,7 +262,7 @@ const ProductInfo = () => {
                           {item.userid.fname} {item.userid.lname}{" "}
                         </h4>
                         <div className="flex space-x-1 mt-1">
-                          <svg
+                          {/* <svg
                             className="w-4 fill-orange-400"
                             viewBox="0 0 14 13"
                             fill="none"
@@ -298,7 +301,13 @@ const ProductInfo = () => {
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                          </svg>
+                          </svg> */}
+                         
+                          {/* <Rating 
+                          className="flex-center"  
+            
+                          
+                          /> */}
                           <p className="text-xs !ml-2 font-semibold">
                             {" "}
                             {dateFormat(item.createdAt)}

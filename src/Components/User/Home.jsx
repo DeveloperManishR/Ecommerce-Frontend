@@ -11,6 +11,7 @@ import ProductDetail from "../../Common/ProductDetail";
 import HomePageList from "../../Common/HomePageList";
 import { IoMdCart } from "react-icons/io";
 import { Link } from "react-router-dom";
+import DynamicRating from "../../Common/DynamicRating";
 const Home = () => {
   const [products, setproducts] = useState([]);
   const [category, setcategory] = useState([]);
@@ -177,11 +178,12 @@ const Home = () => {
                       {item.title}
                     </h2>
                     <div className="text-base text-lightText flex items-center">
+                      {/* <MdOutlineStarOutline />
                       <MdOutlineStarOutline />
                       <MdOutlineStarOutline />
                       <MdOutlineStarOutline />
-                      <MdOutlineStarOutline />
-                      <MdOutlineStarOutline />
+                      <MdOutlineStarOutline /> */}
+                      <DynamicRating  rating={item.rating}  />
                     </div>
                   </div>
                 </div>
