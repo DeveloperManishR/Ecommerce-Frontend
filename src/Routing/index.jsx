@@ -84,7 +84,7 @@ export const Routing = () => {
             }
           />
 
-<Route
+          <Route
             path="/send"
             element={
               <PrivateAdminRoute>
@@ -93,8 +93,6 @@ export const Routing = () => {
               </PrivateAdminRoute>
             }
           />
-
-
 
           <Route
             path="/user-orders"
