@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { withoutAuthAxios } from "../../config/config";
+import { authAxios, withoutAuthAxios } from "../../config/config";
 
 const Users = () => {
   const [users, setusers] = useState([]);
 
   const fetchAllusers = async () => {
-    await withoutAuthAxios()
+    await authAxios()
       .get(`/auth/get-all-users`)
       .then((response) => {
         const resData = response.data;
-
         setusers(resData.data);
       })
       .catch((error) => {

@@ -16,6 +16,8 @@ const Checkout = () => {
 
   const UserId = useSelector((state) => state?.auth?.user?.id);
 
+  const user=useSelector((state)=>state.auth.user)
+
   const [productDetails, setproductDetails] = useState({
     product: [],
     totalAmount: "",
@@ -89,7 +91,11 @@ const Checkout = () => {
       .then((response) => {
         handleRemoveAllProductsFromCart();
         toast.success(response.data.message);
-        socket.emit("newOrder",response.data)
+        console.log("response",response.data)
+        const payload={
+          name:user.fname+user.lname
+        }
+        socket.emit("newOrder",payload)
       })
       .catch((error) => {
         console.log("error", error);
