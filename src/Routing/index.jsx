@@ -20,6 +20,7 @@ import AdminOrders from "../Components/Admin/Orders";
 import Users from "../Components/Admin/Users";
 import NormalUserLayout from "../Layout/NormalUserLayout";
 import NormalUserHome from "../Components/NormalUser/NormalUserHome";
+import { Test } from "../Common/Test";
 
 export const Routing = () => {
   const userRole = useSelector((state) => state.auth.user.role);
@@ -82,6 +83,18 @@ export const Routing = () => {
               </PrivateAdminRoute>
             }
           />
+
+<Route
+            path="/send"
+            element={
+              <PrivateAdminRoute>
+                {" "}
+                <Test />{" "}
+              </PrivateAdminRoute>
+            }
+          />
+
+
 
           <Route
             path="/user-orders"

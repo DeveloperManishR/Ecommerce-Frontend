@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../Redux/Reducers/authSlice";
 import { toast } from "react-toastify";
-
+import {useSocket} from "../config/SocketContext"
 const navigation = [
   { name: "Home" },
   { name: "Categories" },
@@ -19,6 +19,24 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 const Header = () => {
+  const socket = useSocket();
+
+  useEffect(() => {
+    const handleNewNotification = (notification) => {
+      console.log("notifation",notification)
+    };
+
+    if (socket) {
+      socket.on("newNotification", handleNewNotification);
+    }
+
+    return () => {
+      if (socket) {
+        socket.off("newNotification", handleNewNotification);
+      }
+    };
+  }, [ socket]);
+
   const navigate = useNavigate();
   const dispatch=useDispatch()
   const handleNavigate = (data) => {
