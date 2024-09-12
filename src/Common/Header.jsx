@@ -18,7 +18,7 @@ const navigation = [
 
 const normalNavigation = [
   { name: "Home" },
-  { name: "Wishlist" },
+//  { name: "Wishlist" },
   { name: "Categories" },
 ];
 

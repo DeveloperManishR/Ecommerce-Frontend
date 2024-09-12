@@ -12,6 +12,7 @@ import HomePageList from "../../Common/HomePageList";
 import { IoMdCart } from "react-icons/io";
 import { Link } from "react-router-dom";
 import DynamicRating from "../../Common/DynamicRating";
+import CheckoutCart from "./CheckoutCart";
 const Home = () => {
   const [products, setproducts] = useState([]);
   const [category, setcategory] = useState([]);
@@ -19,6 +20,7 @@ const Home = () => {
   const [currentPage, setcurrentPage] = useState(1);
   const [postsPerPage, setpostsPerPage] = useState(20);
   const [totalPosts, settotalPosts] = useState(0);
+  const [showcart, setshowcart] = useState(false)
 
   const [currentImagedata, setcurrentImagedata] = useState({
     data: "",
@@ -108,8 +110,8 @@ const Home = () => {
     await authAxios()
       .post(`/cart/add-to-cart/${item._id}`)
       .then((response) => {
-        //  removeWishlistProduct(item._id);
         toast.success(response.data.message);
+        setshowcart(true)
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -196,6 +198,10 @@ const Home = () => {
         {allmodel.showProductDetail && (
           <ProductDetail allmodel={allmodel} setallmodel={setallmodel} />
         )}
+
+        {
+          showcart&& <CheckoutCart showcart={showcart} setshowcart={setshowcart}/>
+        }
       </div>
     </div>
   );

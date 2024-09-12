@@ -9,8 +9,11 @@ import { LuArrowLeftRight } from "react-icons/lu";
 import { MdOutlineStarOutline } from "react-icons/md";
 import { toast } from "react-toastify";
 import ProductDetail from "../../Common/ProductDetail";
+import CheckoutCart from "./CheckoutCart";
 const Wishlist = () => {
   const [wishlistProducts, setwishlistProducts] = useState([]);
+
+  const [showcart, setshowcart] = useState(false)
   const [allmodel, setallmodel] = useState({
     data:{},
     showProductDetail:false
@@ -54,6 +57,7 @@ const Wishlist = () => {
       .post(`/cart/add-to-cart/${item.wishlist._id}`)
       .then((response) => {
         removeWishlistProduct(item._id);
+        setshowcart(true)
      //   toast.success(response.data.message);
       })
       .catch((error) => {
@@ -69,7 +73,7 @@ const Wishlist = () => {
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+        <h2 onClick={()=>setshowcart(true)} className="text-2xl font-bold tracking-tight text-gray-900">
           Wishlist Products
         </h2>
 
@@ -125,6 +129,12 @@ const Wishlist = () => {
         {
           allmodel.showProductDetail&& <ProductDetail allmodel={allmodel} setallmodel={setallmodel} />
         }
+
+        {
+          showcart&& <CheckoutCart showcart={showcart} setshowcart={setshowcart}/>
+        }
+
+
       </div>
     </div>
   );

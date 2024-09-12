@@ -8,6 +8,7 @@ import { handleImage } from "../../utils/helper";
 const Cart = () => {
   const [AllProducts, setAllProducts] = useState([]);
   const dispatch = useDispatch();
+  
 
   const getAllcartsProducts = async () => {
     await authAxios()
@@ -112,9 +113,10 @@ const Cart = () => {
                       </span>
                       <span className="text-red-500 text-xs"></span>
                       <a
-                        onClick={() =>
-                          dispatch(() => removeProductfromCart(item._id))
-                        }
+                        // onClick={() =>
+                        //   dispatch(() => removeProductfromCart(item._id))
+                        // }
+                        onClick={()=>removeProductfromCart(item._id)}
                         className="font-semibold hover:text-red-500 text-gray-500 text-xs"
                       >
                         <FaTrash classNameName="mb-5" size={20} />
