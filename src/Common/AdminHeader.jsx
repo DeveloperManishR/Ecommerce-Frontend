@@ -2,20 +2,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { BellIcon } from "@heroicons/react/24/outline"; // Keeping only BellIcon for clarity
 import { useSocket } from '../config/SocketContext';
 import { useSelector } from 'react-redux';
-
+import { authAxios } from "../config/config";
 const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const dropdownRef = useRef(null); // Reference for the dropdown
-  const UserId = useSelector((state) => state?.auth?.user?.id);
+  const user = useSelector((state) => state?.auth?.user);
 
   const socket=useSocket()
 
-  const [allNotifications, setallNotifications] = useState([
-    { id: 1, message: 'Order #3201 has been shipped.' },
-    { id: 2, message: 'New customer signed up: Olivia Martin.' },
-    { id: 3, message: 'Order #3204 is still unfulfilled.' },
-    { id: 4, message: 'Product inventory is running low.' },
-  ])
+  const [allNotifications, setallNotifications] = useState([])
 
   console.log("allNotifications",allNotifications)
 
@@ -25,6 +20,23 @@ const Header = () => {
     { id: 3, message: 'Order #3204 is still unfulfilled.' },
     { id: 4, message: 'Product inventory is running low.' },
   ];
+
+
+  const fetchNotifications = async () => {
+    try {
+      const response = await authAxios().get(
+        `/notification/get-all-notification/${user?.id}`
+      );
+      // console.log(response, "advh j hjfd fd")
+      if (response?.data && response?.data?.status === 1) {
+        console.log(response.data)
+        setallNotifications(response.data.data)
+        
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -45,22 +57,24 @@ const Header = () => {
 
 
   useEffect(() => {
-    const handleNewNotification = (notification) => {
-      console.log("notification",notification.message)
-        setallNotifications([{id:Math.random(),message:notification.message},...allNotifications])
-    };
+   
 
     if (socket) {
        console.log("socke",socket)
-      socket.on("newNotification", handleNewNotification);
+      socket.on("newNotification", fetchNotifications);
     }
 
     return () => {
       if (socket) {
-        socket.off("newNotification", handleNewNotification);
+        socket.off("newNotification", fetchNotifications);
       }
     };
-  }, [UserId, socket]);
+  }, [user?.id, socket]);
+
+
+  useEffect(()=>{
+    fetchNotifications()
+  },[])
 
   return (
     <header className="bg-white shadow p-4 flex items-center justify-between relative">
@@ -75,9 +89,8 @@ const Header = () => {
             className="relative focus:outline-none"
           >
             <BellIcon className="w-6 h-6 text-gray-600 hover:text-gray-800" />
-            {/* Notification Badge */}
-            <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+            
+            <span class="absolute top-0 end-0 inline-flex items-center py-0.5 px-1.5 rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-red-500 text-white">{allNotifications.length}</span>          </button>
 
           {/* Notification Dropdown */}
           {showNotifications && (
@@ -89,8 +102,8 @@ const Header = () => {
                 <h4 className="font-semibold text-lg">Notifications</h4>
                 <ul className="divide-y divide-gray-200">
                   {allNotifications.length ? (
-                    allNotifications.map((notification) => (
-                      <li key={notification.id} className="py-2">
+                    allNotifications.map((notification,index) => (
+                      <li key={index+1} className="py-2">
                         {notification.message}
                       </li>
                     ))
