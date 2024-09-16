@@ -56,8 +56,8 @@ export const Routing = () => {
                 path="/"
                 element={
                   <NormalUserLayout>
-                    {" "}
-                    <NormalUserHome />{" "}
+                   
+                    <NormalUserHome />
                   </NormalUserLayout>
                 }
               />

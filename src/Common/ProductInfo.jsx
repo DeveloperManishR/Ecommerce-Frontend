@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { authAxios } from "../config/config";
 import { dateFormat } from "../utils/helper";
-import { Rating } from "react-simple-star-rating";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
 import DynamicRating from "./DynamicRating";
 
 const ProductInfo = () => {
@@ -130,7 +131,7 @@ const ProductInfo = () => {
               >
                 <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
               </svg> */}
-               <DynamicRating  rating={ProductDetail.rating}  />
+              <DynamicRating rating={ProductDetail.rating} />
             </div>
 
             <div className="mt-8">
@@ -262,52 +263,15 @@ const ProductInfo = () => {
                           {item.userid.fname} {item.userid.lname}{" "}
                         </h4>
                         <div className="flex space-x-1 mt-1">
-                          {/* <svg
-                            className="w-4 fill-orange-400"
-                            viewBox="0 0 14 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                          </svg>
-                          <svg
-                            className="w-4 fill-orange-400"
-                            viewBox="0 0 14 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                          </svg>
-                          <svg
-                            className="w-4 fill-orange-400"
-                            viewBox="0 0 14 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                          </svg>
-                          <svg
-                            className="w-4 fill-[#CED5D8]"
-                            viewBox="0 0 14 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                          </svg>
-                          <svg
-                            className="w-4 fill-[#CED5D8]"
-                            viewBox="0 0 14 13"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                          </svg> */}
-                         
-                          {/* <Rating 
-                          className="flex-center"  
-            
-                          
-                          /> */}
+                          <Rating
+                            style={{ maxWidth: 100 }}
+                            //onChange={handleRating}
+                            value={item.rating}
+                            size={25}
+                            transition
+                            fillColor="yellow"
+                            emptyColor="gray"
+                          />
                           <p className="text-xs !ml-2 font-semibold">
                             {" "}
                             {dateFormat(item.createdAt)}

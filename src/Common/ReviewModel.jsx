@@ -1,30 +1,51 @@
 import React, { useState } from "react";
-import { Rating } from "react-simple-star-rating";
+//import { Rating } from "react-simple-star-rating";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
 
-const ReviewModel = ({allmodel,setallmodel,handleSubmitReview}) => {
+function getRating(rating) {
+  switch (rating) {
+    case 1:
+      return "Poor";
+    case 2:
+      return "Nothing special";
+    case 3:
+      return "Average";
+    case 4:
+      return "Very good";
+    case 5:
+      return "Excellent";
+    default:
+      return "None";
+  }
+}
+
+const ReviewModel = ({ allmodel, setallmodel, handleSubmitReview }) => {
+  console.log("all model", allmodel);
   const [rating, setRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
 
   const handleRating = (number) => {
-    setallmodel((prev)=>({
-        ...prev,
-        rating:number
-    }))
+    console.log("called");
+    setallmodel((prev) => ({
+      ...prev,
+      rating: number,
+    }));
     // setRating(number);
     // // other logic
   };
-  
 
-  const handleComment=(data)=>{
-    setallmodel((prev)=>({
-        ...prev,
-        comment:data
-    }))
-  }
+  const handleComment = (data) => {
+    setallmodel((prev) => ({
+      ...prev,
+      comment: data,
+    }));
+  };
 
-  const handleSubmit=(e)=>{
-    e.preventDefault()
-    handleSubmitReview()
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSubmitReview();
+  };
 
   return (
     <div
@@ -46,50 +67,48 @@ const ReviewModel = ({allmodel,setallmodel,handleSubmitReview}) => {
             <span className="text-lg text-gray-900 dark:text-white">
               Your Rating:
             </span>
-           
 
-            
             <Rating
-              onClick={handleRating}
-              ratingValue={allmodel.rating}
+              style={{ maxWidth: 180 }}
+              onChange={handleRating}
+              value={allmodel.rating}
               size={25} // Adjust the size of the stars
               transition // Smooth animation on hover
-              fillColor="gold" // Star fill color
+              fillColor="yellow" // Star fill color
               emptyColor="gray" // Empty star color
-              className="inline-block"
-              
+              onHoverChange={setHoveredRating}
             />
-           
+
             <span className="text-sm text-gray-500 dark:text-gray-400">
               {allmodel.rating} / 5
             </span>
           </div>
 
-         
-            <div className="py-2 px-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-              <label htmlFor="comment" className="sr-only">
-                Your comment
-              </label>
-              <textarea
-                id="comment"
-                onChange={(e)=>handleComment(e.target.value)}
-                rows="6"
-                value={allmodel.comment}
-                className="w-full px-0 text-sm text-gray-900 dark:text-white dark:placeholder-gray-400 bg-transparent focus:outline-none"
-                placeholder="Write a comment..."
-                required
-              ></textarea>
-            </div>
-            <div   className="text-right">
-              <button
-               onClick={handleSubmit}
-                type="submit"
-                className="inline-flex items-center py-2.5 px-6 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 transition"
-              >
-                Add Review
-              </button>
-            </div>
-          
+          <div>{`${getRating(hoveredRating)}`}</div>
+
+          <div className="py-2 px-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+            <label htmlFor="comment" className="sr-only">
+              Your comment
+            </label>
+            <textarea
+              id="comment"
+              onChange={(e) => handleComment(e.target.value)}
+              rows="6"
+              value={allmodel.comment}
+              className="w-full px-0 text-sm text-gray-900 dark:text-white dark:placeholder-gray-400 bg-transparent focus:outline-none"
+              placeholder="Write a comment..."
+              required
+            ></textarea>
+          </div>
+          <div className="text-right">
+            <button
+              onClick={handleSubmit}
+              type="submit"
+              className="inline-flex items-center py-2.5 px-6 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 transition"
+            >
+              Add Review
+            </button>
+          </div>
         </div>
       </div>
     </div>

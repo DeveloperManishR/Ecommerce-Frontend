@@ -20,7 +20,7 @@ const Home = () => {
   const [currentPage, setcurrentPage] = useState(1);
   const [postsPerPage, setpostsPerPage] = useState(20);
   const [totalPosts, settotalPosts] = useState(0);
-  const [showcart, setshowcart] = useState(false)
+  const [showcart, setshowcart] = useState(false);
 
   const [currentImagedata, setcurrentImagedata] = useState({
     data: "",
@@ -111,7 +111,7 @@ const Home = () => {
       .post(`/cart/add-to-cart/${item._id}`)
       .then((response) => {
         toast.success(response.data.message);
-        setshowcart(true)
+        setshowcart(true);
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -185,7 +185,7 @@ const Home = () => {
                       <MdOutlineStarOutline />
                       <MdOutlineStarOutline />
                       <MdOutlineStarOutline /> */}
-                      <DynamicRating  rating={item.rating}  />
+                      <DynamicRating rating={item.rating} />
                     </div>
                   </div>
                 </div>
@@ -193,15 +193,13 @@ const Home = () => {
             ))}
         </div>
 
-        {/* <HomePageList/> */}
-
         {allmodel.showProductDetail && (
           <ProductDetail allmodel={allmodel} setallmodel={setallmodel} />
         )}
 
-        {
-          showcart&& <CheckoutCart showcart={showcart} setshowcart={setshowcart}/>
-        }
+        {showcart && (
+          <CheckoutCart showcart={showcart} setshowcart={setshowcart} />
+        )}
       </div>
     </div>
   );
