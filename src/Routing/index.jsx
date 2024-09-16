@@ -21,6 +21,7 @@ import Users from "../Components/Admin/Users";
 import NormalUserLayout from "../Layout/NormalUserLayout";
 import NormalUserHome from "../Components/NormalUser/NormalUserHome";
 import { Test } from "../Common/Test";
+import Profile from "../Components/User/Profile";
 
 export const Routing = () => {
   const userRole = useSelector((state) => state.auth.user.role);
@@ -30,6 +31,7 @@ export const Routing = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+
           {userRole == "USER" ? (
             <Route
               path="/"
@@ -70,6 +72,16 @@ export const Routing = () => {
               <PrivateUserRoute>
                 {" "}
                 <ProductInfo />{" "}
+              </PrivateUserRoute>
+            }
+          />
+
+<Route
+            path="/profile"
+            element={
+              <PrivateUserRoute>
+                {" "}
+                <Profile />{" "}
               </PrivateUserRoute>
             }
           />
@@ -146,7 +158,7 @@ export const Routing = () => {
             element={
               <PrivateUserRoute>
                 {" "}
-                <ThankyouPage />{" "}
+                <ThankyouPage />
               </PrivateUserRoute>
             }
           />

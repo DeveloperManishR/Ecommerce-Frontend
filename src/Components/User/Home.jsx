@@ -21,6 +21,11 @@ const Home = () => {
   const [postsPerPage, setpostsPerPage] = useState(20);
   const [totalPosts, settotalPosts] = useState(0);
   const [showcart, setshowcart] = useState(false);
+ 
+  const [currentImage, setcurrentImage] = useState({
+    data:[],
+   currentIndex:""
+  })
 
   const [currentImagedata, setcurrentImagedata] = useState({
     data: "",
@@ -68,6 +73,10 @@ const Home = () => {
         console.log(error);
       });
   };
+
+  const handleChangeImage=()=>{
+    
+  }
 
   const addTowishlist = async (id) => {
     await authAxios()
@@ -123,6 +132,8 @@ const Home = () => {
     //  fetchAllproductsCategory();
     getAllwishlistProducts();
   }, []);
+
+  console.log(currentImage)
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -133,15 +144,26 @@ const Home = () => {
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products &&
             products.map((item) => (
+
               <div key={item.id} className="group relative">
                 <div className="border border-gray-200 rounded-lg p-1 overflow-hidden hover:border-black duration-200 cursor-pointer">
                   <div className="w-full h-60 relative p-2 group">
                     <Link to={`/product-info/${item?._id}`}>
-                      <img
-                        src={handleImage(item.images[0])}
-                        alt="productImage"
-                        className="w-full h-full rounded-md object-cover group-hover:scale-110 duration-300"
-                      />
+
+                    {
+                      currentImage._id==item._id?<img
+                      src={handleImage(item.images[1])}
+                      alt="productImage"
+                      className="w-full h-full rounded-md object-cover group-hover:scale-110 duration-300"
+                    />:<img
+                    src={handleImage(item.images[0])}
+                    alt="productImage"
+                    className="w-full h-full rounded-md object-cover group-hover:scale-110 duration-300"
+                  />
+                    }
+                      
+
+
                     </Link>
                     <div className="absolute right-1 top-1 flex flex-col gap-1 transition translate-x-12 group-hover:translate-x-0 duration-300">
                       <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
@@ -155,7 +177,7 @@ const Home = () => {
                           <FaRegStar onClick={() => addTowishlist(item._id)} />
                         )}
                       </span>
-                      <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
+                      <span onClick={()=>setcurrentImage(item)}  className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
                         <LuArrowLeftRight />
                       </span>
                       <span
@@ -180,11 +202,7 @@ const Home = () => {
                       {item.title}
                     </h2>
                     <div className="text-base text-lightText flex items-center">
-                      {/* <MdOutlineStarOutline />
-                      <MdOutlineStarOutline />
-                      <MdOutlineStarOutline />
-                      <MdOutlineStarOutline />
-                      <MdOutlineStarOutline /> */}
+                     
                       <DynamicRating rating={item.rating} />
                     </div>
                   </div>
