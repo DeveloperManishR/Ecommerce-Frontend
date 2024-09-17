@@ -1,5 +1,6 @@
 import { IoCloseSharp } from "react-icons/io5";
 import React from "react";
+import { handleImage } from "../utils/helper";
 
 const ProductDetail = ({ allmodel, setallmodel }) => {
   console.log("allmodel", allmodel);
@@ -28,7 +29,7 @@ const ProductDetail = ({ allmodel, setallmodel }) => {
               {/* Image Section */}
               <div className="w-2/5 overflow-hidden rounded-l-xl">
                 <img
-                  src={allmodel.data.images[0]}
+                  src={ handleImage(allmodel.data.images[0])}
                   alt="Product"
                   className=""
                 />
