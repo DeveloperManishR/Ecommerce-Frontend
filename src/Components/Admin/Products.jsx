@@ -69,20 +69,35 @@ const Products = () => {
   const handleEditProduct = async (data) => {
 
     console.log("data",data)
-    const formData = new FormData();
+
+  //  const mergerdImages=[...data.images,data.prevImages]
+    const mergerdImages=data.prevImages.concat(...data.images)
+    console.log("mer",mergerdImages)
     
+    const formData = new FormData();
+    mergerdImages.forEach((file) => {
+      formData.append("images", file);
+    });
 
     formData.append("title", data.title);
     formData.append("category", data.category);
     formData.append("description", data.description);
     formData.append("price", data.price);
     formData.append("stock", data.stock);
-
+    //formData.append("images",mergerdImages)
+  
     await authAxios()
       .put(`/product/update-product/${model?.data?._id}`, formData)
       .then((response) => {
         const resData = response.data;
         toast.success(resData.message);
+
+        setmodel((prev)=>({
+          ...prev,
+          show:false,
+          data:[]
+        }))
+
         fetchAllproducts();
       })
       .catch((error) => {

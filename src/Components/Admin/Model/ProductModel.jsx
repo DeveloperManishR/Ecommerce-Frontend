@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { FiPlus } from "react-icons/fi";
 import { handleImage } from "../../../utils/helper";
-
+import { AiOutlineClose } from "react-icons/ai";
 const ProductModel = ({
   addProduct,
   setshowaddProduct,
@@ -21,8 +21,6 @@ const ProductModel = ({
     prevImages: [],
   });
 
-  console.log("model", formData);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setformData((prev) => ({
@@ -31,9 +29,7 @@ const ProductModel = ({
     }));
   };
 
-  const handleclose = () => {
-    setshowaddProduct(false);
-  };
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,6 +44,24 @@ const ProductModel = ({
     setformData((prev) => ({
       ...prev,
       images: [...formData?.images, ...Array.from(files)],
+    }));
+  };
+
+  const handleRemoveCurrentImage = (newindex) => {
+    const test = formData?.images.filter((item, index) => index !== newindex);
+    setformData((prev) => ({
+      ...prev,
+      images: test,
+    }));
+  };
+
+  const handleRemovePrevImage = (newindex) => {
+    const test = formData?.prevImages.filter(
+      (item, index) => index !== newindex
+    );
+    setformData((prev) => ({
+      ...prev,
+      prevImages: test,
     }));
   };
 
@@ -224,26 +238,42 @@ const ProductModel = ({
                   />
 
                   {formData && formData?.images.length > 0 && (
-                    <div className="flex flex-wrap gap-4 p-4 border border-gray-300 rounded-md">
+                    <div className="flex flex-wrap gap-4 p-4  rounded-md">
                       {formData?.images.map((item, index) => (
-                        <img
-                          class="w-20 h-20 rounded"
-                          src={URL.createObjectURL(item)}
-                          alt={`Image ${index + 1}`}
-                        />
+                        <div key={index} className="relative w-20 h-20">
+                          <img
+                            className="w-full h-full object-cover rounded"
+                            src={URL.createObjectURL(item)}
+                            alt={`Image ${index + 1}`}
+                          />
+
+                          <AiOutlineClose
+                            className="absolute top-0 right-0 m-1 text-white bg-black rounded-full p-1 cursor-pointer"
+                            size={16}
+                            onClick={() => handleRemoveCurrentImage(index)} // Function to remove the image
+                          />
+                        </div>
                       ))}
                     </div>
                   )}
 
                   {formData && formData?.prevImages?.length > 0 && (
-                    <div className="flex flex-wrap gap-4 p-4 border border-gray-300 rounded-md">
+                    <div className="flex flex-wrap gap-4 p-4  rounded-md">
                       {formData?.prevImages.map((item, index) => (
-                        <img
-                          key={index}
-                          className="w-20 h-20 rounded"
-                          src={handleImage(item)}
-                          alt={`Image ${index + 1}`}
-                        />
+                        <div key={index} className="relative w-20 h-20">
+                          <img
+                            key={index}
+                            className="w-full h-full object-cover rounded"
+                            src={handleImage(item)}
+                            alt={`Image ${index + 1}`}
+                          />
+
+                          <AiOutlineClose
+                            className="absolute top-0 right-0 m-1 text-white bg-black rounded-full p-1 cursor-pointer"
+                            size={16}
+                            onClick={() => handleRemovePrevImage(index)} // Function to remove the image
+                          />
+                        </div>
                       ))}
                     </div>
                   )}
