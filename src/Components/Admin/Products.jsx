@@ -12,8 +12,14 @@ import ProductModel from "./Model/ProductModel";
 import { toast } from "react-toastify";
 import ProductDetail from "../../Common/ProductDetail";
 import { handleViewPrice, handleViewRating } from "../../utils/helper";
+import Pagination from "../../Common/Pagination";
 const Products = () => {
   const [products, setproducts] = useState([]);
+
+  const [currentPage, setcurrentPage] = useState(1);
+  const [postsPerPage, setpostsPerPage] = useState(25);
+  const [totalPosts, settotalPosts] = useState(0);
+  const paginate = (pageNumber) => setcurrentPage(pageNumber);
 
   const [model, setmodel] = useState({
     show: false,
@@ -27,11 +33,12 @@ const Products = () => {
 
   const fetchAllproducts = async () => {
     await withoutAuthAxios()
-      .get(`/product/get-all-products`)
+      .get(`/product/get-all-products?page=${currentPage}&limit=${postsPerPage}`)
       .then((response) => {
         const resData = response.data;
 
         setproducts(resData.data);
+        settotalPosts(resData.count)
       })
       .catch((error) => {
         console.log("error", error);
@@ -120,12 +127,11 @@ const Products = () => {
 
   const [currentDropdown, setcurrentDropdown] = useState([]);
 
-  console.log("curr", currentDropdown);
 
   useEffect(() => {
     fetchAllproducts();
-    //  fetchAllproductsCategory();
-  }, []);
+    
+  }, [currentPage]);
   return (
     <div className="flex-1 p-6">
       <h2 className="text-2xl font-semibold mb-6">Products</h2>
@@ -265,6 +271,13 @@ const Products = () => {
       {allmodel.showProductDetail && (
         <ProductDetail allmodel={allmodel} setallmodel={setallmodel} />
       )}
+
+      <Pagination   
+      currentPage={currentPage}
+      totalPosts={totalPosts}
+      paginate={paginate}
+      postsPerPage={postsPerPage}
+      />
     </div>
   );
 };
