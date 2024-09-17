@@ -8,6 +8,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { authAxios } from "../../config/config";
 import { Link } from "react-router-dom";
+import { handleImage } from "../../utils/helper";
 
 // const products = [
 //   {
@@ -116,7 +117,7 @@ const CheckoutCart = ({ showcart, setshowcart }) => {
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
                                   alt={item?.imageAlt}
-                                  src={item?.product?.images[0]}
+                                  src={handleImage(item?.product?.images[0])}
                                   className="h-full w-full object-cover object-center"
                                 />
                               </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { authAxios } from "../config/config";
-import { dateFormat } from "../utils/helper";
+import { dateFormat, handleImage } from "../utils/helper";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import DynamicRating from "./DynamicRating";
@@ -50,7 +50,7 @@ const ProductInfo = () => {
         <div className="grid items-start grid-cols-1 lg:grid-cols-5 gap-12">
           <div className="min-h-[500px] lg:col-span-3 bg-gradient-to-tr  from-[#F8C794] via-[#FFE0B5] to-[#FFF2D7] rounded-lg w-full lg:sticky top-0 text-center p-6">
             <img
-              src={displayImage}
+              src={ handleImage(displayImage)}
               alt="Product"
               className="w-3/5 rounded object-cover mx-auto py-6"
             />
@@ -65,7 +65,7 @@ const ProductInfo = () => {
                       <div className="w-20 h-20 max-lg:w-16 max-lg:h-16 bg-[#fff2c9] p-3 rounded-lg">
                         <img
                           onClick={() => setdisplayImage(item)}
-                          src={item}
+                          src={handleImage(item)}
                           alt="Product1"
                           className="w-full h-full cursor-pointer"
                         />
@@ -78,11 +78,11 @@ const ProductInfo = () => {
 
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold text-gray-800">
-              {ProductDetail.title} | {ProductDetail.category}
+              {ProductDetail?.title} | {ProductDetail?.category}
             </h2>
             <div className="flex flex-wrap gap-4 mt-4">
               <p className="text-gray-800 text-xl font-bold">
-                ${ProductDetail.price}
+                ${ProductDetail?.price}
               </p>
               {/* <p className="text-gray-400 text-xl">
                 <strike>$16</strike>{" "}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { authAxios } from "../../config/config";
-import { dateFormat } from "../../utils/helper";
+import { dateFormat, handleImage } from "../../utils/helper";
 import ReviewModel from "../../Common/ReviewModel";
 import { useSelector } from "react-redux";
 
@@ -163,7 +163,7 @@ const Orders = () => {
                       <div className="grid grid-cols-4 w-full">
                         <div className="col-span-4 sm:col-span-1">
                           <img
-                            src={order.product.images[0]}
+                            src={handleImage(order.product.images[0])}
                             alt=""
                             className="max-sm:mx-auto"
                           />

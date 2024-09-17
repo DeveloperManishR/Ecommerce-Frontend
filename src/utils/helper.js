@@ -2,10 +2,10 @@ import moment from "moment";
 
 
 export const handleImage = (data) => {
-    if (typeof data === "string" && data.includes("public")) {
-      return `${import.meta.env.VITE_REACT_APP_BASEURL}/${data}`;
-    } else {
-      return data;
+    if(data.includes("https")){
+     return data
+    }else{
+    return  `${import.meta.env.VITE_REACT_APP_BASEURL}/public/product-images/${data}`
     }
   };
   export const dateFormat = (value) => {
@@ -15,4 +15,13 @@ export const handleImage = (data) => {
     } else {
       return "";
     }
+  };
+
+  export const handleViewPrice=(value)=>{
+    if(value){
+      return Math.round(value * 100) / 100;
+    }
+  }
+  export const handleViewRating = value => {
+    return value?.toFixed(1);
   };

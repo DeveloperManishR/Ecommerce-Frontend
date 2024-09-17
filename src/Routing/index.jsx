@@ -22,6 +22,7 @@ import NormalUserLayout from "../Layout/NormalUserLayout";
 import NormalUserHome from "../Components/NormalUser/NormalUserHome";
 import { Test } from "../Common/Test";
 import Profile from "../Components/User/Profile";
+import PageNotFound from "../Common/PageNotFound";
 
 export const Routing = () => {
   const userRole = useSelector((state) => state.auth.user.role);
@@ -76,7 +77,7 @@ export const Routing = () => {
             }
           />
 
-<Route
+           <Route
             path="/profile"
             element={
               <PrivateUserRoute>
@@ -125,6 +126,7 @@ export const Routing = () => {
               </PrivateAdminRoute>
             }
           />
+           <Route path="*" element={<PageNotFound />} />
 
           <Route
             path="/wishlist"

@@ -11,6 +11,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import ProductModel from "./Model/ProductModel";
 import { toast } from "react-toastify";
 import ProductDetail from "../../Common/ProductDetail";
+import { handleViewPrice, handleViewRating } from "../../utils/helper";
 const Products = () => {
   const [products, setproducts] = useState([]);
 
@@ -160,9 +161,9 @@ const Products = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     {item?.category}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item?.price}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{handleViewPrice(item?.price)}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {item?.rating}
+                    {handleViewRating(item?.rating)}
                   </td>
                   <td
                     onClick={() => setcurrentDropdown(item)}

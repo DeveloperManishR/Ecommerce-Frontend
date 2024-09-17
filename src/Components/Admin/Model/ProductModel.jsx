@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
+import { FiPlus } from "react-icons/fi";
+import { handleImage } from "../../../utils/helper";
+
 const ProductModel = ({
   addProduct,
   setshowaddProduct,
   handleAddProduct,
   setmodel,
   model,
-  handleEditProduct
+  handleEditProduct,
 }) => {
   const [formData, setformData] = useState({
     title: "",
@@ -15,9 +18,10 @@ const ProductModel = ({
     price: "",
     stock: "",
     images: [],
+    prevImages: [],
   });
 
-  console.log("model", model);
+  console.log("model", formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,13 +61,14 @@ const ProductModel = ({
         price: model.data.price,
         stock: model.data.stock,
         images: [],
+        prevImages: model.data.images,
       }));
     }
   }, []);
 
   const handleEditUpdate = (e) => {
     e.preventDefault();
-    handleEditProduct(formData)
+    handleEditProduct(formData);
   };
 
   return (
@@ -91,7 +96,9 @@ const ProductModel = ({
 
                 <div
                   className="close cursor-pointer text-[20px]"
-                  onClick={() => setmodel((prev) => ({ ...prev, show: false ,data:[]}))}
+                  onClick={() =>
+                    setmodel((prev) => ({ ...prev, show: false, data: [] }))
+                  }
                 >
                   <IoCloseSharp />
                 </div>
@@ -116,12 +123,7 @@ const ProductModel = ({
                       type="text"
                       placeholder=""
                     />
-                    <div>
-                      {/*  <span class="text-red-500 text-xs italic">
-                        Please fill out this field.
-                      </span>
-                      */}
-                    </div>
+                    <div></div>
                   </div>
                   <div className="md:w-1/2 px-3">
                     <label
@@ -200,16 +202,51 @@ const ProductModel = ({
                     </div>
                   </div>
                 </div>
-                <div className="-mx-3 md:flex mt-2">
-                  <div className="md:w-full px-3">
-                    <input
-                      type="file"
-                      
-                      multiple
-                      onChange={handleUploadFile}
-                      // class="md:w-full bg-gray-900 text-white font-bold py-2 px-4 border-b-4 hover:border-b-2 border-gray-500 hover:border-gray-100 rounded-full"
-                    />
-                  </div>
+                <div className=" mt-2">
+                  <label
+                    htmlFor="file-upload"
+                    className="cursor-pointer flex flex-col items-center"
+                  >
+                    <div className="flex items-center justify-center w-16 h-16 border-2 border-dashed border-gray-400 rounded-full bg-gray-100 hover:bg-gray-200 transition">
+                      {/* Plus icon from react-icons */}
+                      <FiPlus className="text-gray-500 text-2xl" />
+                    </div>
+                    <span className="mt-2 text-gray-600 text-sm">
+                      Add files
+                    </span>
+                  </label>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    multiple
+                    className="hidden"
+                    onChange={handleUploadFile}
+                  />
+
+                  {formData && formData?.images.length > 0 && (
+                    <div className="flex flex-wrap gap-4 p-4 border border-gray-300 rounded-md">
+                      {formData?.images.map((item, index) => (
+                        <img
+                          class="w-20 h-20 rounded"
+                          src={URL.createObjectURL(item)}
+                          alt={`Image ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {formData && formData?.prevImages?.length > 0 && (
+                    <div className="flex flex-wrap gap-4 p-4 border border-gray-300 rounded-md">
+                      {formData?.prevImages.map((item, index) => (
+                        <img
+                          key={index}
+                          className="w-20 h-20 rounded"
+                          src={handleImage(item)}
+                          alt={`Image ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -236,7 +273,9 @@ const ProductModel = ({
                 type="button"
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 // onClick={handleclose}
-                onClick={() => setmodel((prev) => ({ ...prev, show: false ,data:[]}))}
+                onClick={() =>
+                  setmodel((prev) => ({ ...prev, show: false, data: [] }))
+                }
 
                 // onClick={() => setshowAddCategory(false)}
               >
