@@ -214,15 +214,15 @@ const Orders = () => {
                                 show: true,
                                 product: order.product._id,
                                 orderItemid: order._id,
+                                rating:order.reviewid.rating
                               }))
                             }
                             className="bg-black text-white"
                           >
-                            {" "}
                             View Review
                           </button>
                         )}
-                        <div></div>
+                       
                       </div>
                       <div className="flex items-center justify-around w-full  sm:pl-28 lg:pl-0">
                         <div className="flex flex-col justify-center items-start max-sm:items-center">
@@ -239,14 +239,7 @@ const Orders = () => {
                             {order.orderStatus}
                           </p>
                         </div>
-                        {/* <div className="flex flex-col justify-center items-start max-sm:items-center">
-                          <p className="font-normal text-lg text-gray-500 leading-8 mb-2 text-left whitespace-nowrap">
-                            Delivery Expected by
-                          </p>
-                          <p className="font-semibold text-lg leading-8 text-black text-left whitespace-nowrap">
-                            23rd March 2021
-                          </p>
-                        </div> */}
+                        
                       </div>
                     </div>
 

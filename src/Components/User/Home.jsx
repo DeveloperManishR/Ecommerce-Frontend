@@ -119,7 +119,7 @@ const Home = () => {
     await authAxios()
       .post(`/cart/add-to-cart/${item._id}`)
       .then((response) => {
-        toast.success(response.data.message);
+       // toast.success(response.data.message);
         setshowcart(true);
       })
       .catch((error) => {
