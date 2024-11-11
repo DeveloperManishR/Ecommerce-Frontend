@@ -14,7 +14,8 @@ import { Link } from "react-router-dom";
 import DynamicRating from "../../Common/DynamicRating";
 import CheckoutCart from "./CheckoutCart";
 import Pagination from "../../Common/Pagination";
-const Home = () => {
+import IsLoadingHOC from "../../Common/IsLoadingHOC";
+const Home = ({setLoading}) => {
   const [products, setproducts] = useState([]);
   const [category, setcategory] = useState([]);
   const [wishlistProducts, setwishlistProducts] = useState([]);
@@ -38,16 +39,23 @@ const Home = () => {
   });
 
   const fetchAllproducts = async () => {
+    setLoading(true)
     await withoutAuthAxios()
       .get(
         `/product/get-all-products/?page=${currentPage}&limit=${postsPerPage}`
       )
       .then((response) => {
+        setTimeout(() => {
+           setLoading(false)
+        }, 3000);
         const resData = response.data;
         settotalPosts(resData.count);
         setproducts(resData.data);
       })
       .catch((error) => {
+        setTimeout(() => {
+          setLoading(false)
+       }, 3000);
         console.log("error", error);
       });
   };
@@ -86,7 +94,7 @@ const Home = () => {
     await authAxios()
       .post(`/wishlist/add-to-wishlist/${id}`)
       .then((response) => {
-        fetchAllproducts();
+       // fetchAllproducts();
         getAllwishlistProducts();
 
         //  toast.success(response.data.message);
@@ -232,4 +240,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default IsLoadingHOC(Home);
