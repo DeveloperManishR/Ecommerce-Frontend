@@ -23,6 +23,7 @@ import NormalUserHome from "../Components/NormalUser/NormalUserHome";
 import { Test } from "../Common/Test";
 import Profile from "../Components/User/Profile";
 import PageNotFound from "../Common/PageNotFound";
+import FinalCheckout from "../Components/User/FinalCheckout";
 
 export const Routing = () => {
   const userRole = useSelector((state) => state.auth.user.role);
@@ -151,7 +152,7 @@ export const Routing = () => {
             element={
               <PrivateUserRoute>
                 {" "}
-                <Checkout />{" "}
+                <FinalCheckout />{" "}
               </PrivateUserRoute>
             }
           />
