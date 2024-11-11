@@ -1,26 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { authAxios } from "../../config/config";
+import AddressModel from "./Model/AddressModel";
 
 const FinalCheckout = () => {
   const [selectedAddress, setSelectedAddress] = useState(0);
 
-  const addresses = [
-    {
-      id: 0,
-      name: "Manish",
-      label: "HOME",
-      phone: "9910920899",
-      address:
-        "Ca 48c, DDA Janta Flats Block CA, DDA LIG Flats, Hari Nagar, New Delhi, Delhi - 110064",
-    },
-    {
-      id: 1,
-      name: "Manish Rawat",
-      label: "WORK",
-      phone: "9910920899",
-      address:
-        "C-71 sector 2 second floor, Burger king road, Noida, Uttar Pradesh - 201301",
-    },
-  ];
+  const [allAddressList, setallAddressList] = useState([])
+  const [currentDeliveryAddress, setcurrentDeliveryAddress] = useState([])
+
+  const [allmodel, setallmodel] = useState({
+    showAddressModel: false,
+    data: []
+  })
+
+
+  const getAllAddress = async () => {
+    await authAxios()
+      .get(`/address/get-all-address`)
+      .then((response) => {
+        setallAddressList(response.data.data)
+      }).catch((error) => {
+        console.log("fsfdadffd", error)
+      })
+  }
+
+  const addAddressModel = async (data) => {
+    if (allmodel?.showAddressModel == true) {
+      console.log("data", data)
+      await authAxios()
+        .post('/address/add-address', data)
+        .then((response) => {
+
+          setallmodel((prev) => ({
+            ...prev,
+            showAddressModel: false,
+            data: []
+          }))
+          getAllAddress()
+          setcurrentDeliveryAddress([])
+
+        }).catch((error) => {
+          console.log("erssdfsd", error)
+        })
+    } else {
+      setallmodel((prev) => ({
+        ...prev,
+        showAddressModel: true,
+        data: []
+      }))
+    }
+  }
+
+
+
+
+
+  console.log("getAllAddress", allAddressList)
+  useEffect(() => {
+    getAllAddress()
+  }, [])
 
   return (
     <div className="bg-gray-100 min-h-screen p-4 flex justify-center">
@@ -29,31 +67,39 @@ const FinalCheckout = () => {
         <div className="flex-1 bg-white p-6 rounded-lg shadow-lg mr-4">
           <h1 className="text-xl font-semibold mb-4">Checkout</h1>
 
-         
+
           <div className="border-b border-gray-300 pb-4 mb-4">
             <h2 className="text-lg font-medium">1. DELIVERY ADDRESS</h2>
-            <div className="mt-4 space-y-4">
-              {/* Address 1 */}
-              <div className="flex items-start space-x-2">
-                <input type="radio" name="address" />
-                <div>
-                  <p className="font-semibold">Manish (HOME)</p>
-                  <p>Ca 48c, DDA Janta Flats, New Delhi, Delhi - 110064</p>
-                </div>
-              </div>
-              {/* Address 2 */}
-              <div className="flex items-start space-x-2">
-                <input type="radio" name="address" defaultChecked />
-                <div>
-                  <p className="font-semibold">Manish Rawat (WORK)</p>
-                  <p>C-71 sector 2, Burger king road, Noida, Uttar Pradesh - 201301</p>
-                  <button className="text-blue-500">Edit</button>
-                </div>
-              </div>
-            </div>
-            <button className="bg-orange-500 text-white px-4 py-2 rounded mt-4">Deliver Here</button>
-            <button className="text-blue-500 mt-4 block">+ Add a new address</button>
+            {
+              allAddressList && allAddressList.length > 0 && allAddressList.map((item) => (
+                <>
+                  <div className="mt-4 space-y-4">
+                    {/* Address 1 */}
+                    <div onClick={() => setcurrentDeliveryAddress(item)} className="flex items-start space-x-2">
+                      <input type="radio" name="address" />
+                      <div>
+                        <p className="font-semibold">{item?.name} </p>
+                        <p className="font-light">{item?.address}</p>
+                      </div>
+                    </div>
+
+                    {
+                      currentDeliveryAddress && currentDeliveryAddress?._id == item?._id && <button className="bg-orange-500 text-white px-4 py-2 rounded mt-4">Deliver Here</button>
+
+                    }
+                  </div>
+                </>
+
+              ))
+            }
+
+
+
+            <button onClick={() => addAddressModel()} className="text-blue-500 mt-4 block">+ Add a new address</button>
+
           </div>
+
+
 
           {/* Order Summary Section */}
           <div className="border-b border-gray-300 pb-4 mb-4">
@@ -97,6 +143,16 @@ const FinalCheckout = () => {
           </div>
         </div>
       </div>
+
+      {
+        allmodel.showAddressModel && <AddressModel
+          addAddressModel={addAddressModel}
+          setallmodel={setallmodel}
+          allmodel={allmodel}
+
+
+        />
+      }
     </div>
   );
 };
