@@ -5,6 +5,7 @@ import { dateFormat, handleImage } from "../utils/helper";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import DynamicRating from "./DynamicRating";
+import CheckoutCart from "../Components/User/CheckoutCart";
 
 const ProductInfo = () => {
   const [ProductDetail, setProductDetail] = useState([]);
@@ -12,6 +13,7 @@ const ProductInfo = () => {
   const [displayImage, setdisplayImage] = useState("");
   const params = useParams();
   const { id } = params;
+  const [showcart, setshowcart] = useState(false);
 
   console.log("produ", ProductDetail);
 
@@ -39,6 +41,19 @@ const ProductInfo = () => {
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+ 
+  const addTocart = async () => {
+    console.log("cfsdadfaddfdfs")
+    await authAxios()
+      .post(`/cart/add-to-cart/${ProductDetail?._id}`)
+      .then((response) => {
+        // toast.success(response.data.message);
+        setshowcart(true);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
       });
   };
 
@@ -159,13 +174,20 @@ const ProductInfo = () => {
             </div>
 
             <button
+                // onClick={() => addTocart(item)}
+                onClick={()=>addTocart()}
               type="button"
               className="w-full mt-8 px-6 py-3 bg-black hover:bg-gray-500 text-white text-sm font-semibold rounded-md"
             >
               Add to cart
             </button>
 
-            <div className="mt-8">
+
+            {showcart && (
+          <CheckoutCart showcart={showcart} setshowcart={setshowcart} />
+        )}
+
+            {/* <div className="mt-8">
               <h3 className="text-xl font-bold text-gray-800">Reviews(10)</h3>
               <div className="space-y-3 mt-4">
                 <div className="flex items-center">
@@ -265,7 +287,7 @@ const ProductInfo = () => {
                         <div className="flex space-x-1 mt-1">
                           <Rating
                             style={{ maxWidth: 100 }}
-                            //onChange={handleRating}
+                           
                             value={item.rating}
                             size={25}
                             transition
@@ -283,13 +305,8 @@ const ProductInfo = () => {
                   </>
                 ))}
 
-              {/* <button
-                type="button"
-                className="w-full mt-8 px-4 py-2.5 bg-transparent border border-orange-400 text-gray-800 font-semibold rounded-lg"
-              >
-                Read all reviews
-              </button> */}
-            </div>
+            
+            </div> */}
           </div>
         </div>
       </div>

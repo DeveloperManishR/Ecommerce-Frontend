@@ -52,10 +52,10 @@ const Home = () => {
       });
   };
   const fallbackImage =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWzjgpDzdsPtqEgBelBtNQ7o-A5M7SDRjmRw&s";
-  
-  
-  
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWzjgpDzdsPtqEgBelBtNQ7o-A5M7SDRjmRw&s";
+
+
+
   const fetchAllproductsCategory = async () => {
     await withoutAuthAxios()
       .get("/product/get-all-category")
@@ -80,7 +80,7 @@ const Home = () => {
       });
   };
 
-  const handleChangeImage = () => {};
+  const handleChangeImage = () => { };
 
   const addTowishlist = async (id) => {
     await authAxios()
@@ -163,14 +163,14 @@ const Home = () => {
                 <div className="border border-gray-200 rounded-lg p-1 overflow-hidden hover:border-black duration-200 cursor-pointer">
                   <div className="w-full h-60 relative p-2 group">
                     <Link to={`/product-info/${item?._id}`}>
-                     
-                        <img
-                          src={handleImage(item.images[0])}
-                           onError={(e) => (e.target.src = fallbackImage)}
-                          alt="productImage"
-                          className="w-full h-full rounded-md object-cover group-hover:scale-110 duration-300"
-                        />
-                     
+
+                      <img
+                        src={handleImage(item.images[0])}
+                        onError={(e) => (e.target.src = fallbackImage)}
+                        alt="productImage"
+                        className="w-full h-full rounded-md object-cover group-hover:scale-110 duration-300"
+                      />
+
                     </Link>
                     <div className="absolute right-1 top-1 flex flex-col gap-1 transition translate-x-12 group-hover:translate-x-0 duration-300">
                       <span className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200">
@@ -184,12 +184,12 @@ const Home = () => {
                           <FaRegStar onClick={() => addTowishlist(item._id)} />
                         )}
                       </span>
-                      <span
+                      {/* <span
                         onClick={() => setcurrentImage(item)}
                         className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200"
                       >
                         <LuArrowLeftRight />
-                      </span>
+                      </span> */}
                       <span
                         onClick={() => handleViewProduct(item)}
                         className="w-11 h-11 inline-flex text-black text-lg items-center justify-center rounded-full hover:text-white hover:bg-black duration-200"
