@@ -1,18 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { authAxios } from "../../config/config";
 import AddressModel from "./Model/AddressModel";
+import { TrashIcon, MinusIcon, PlusIcon, ArrowLeftIcon, ArrowRightCircleIcon } from "@heroicons/react/24/outline"
+import { handleImage } from "../../utils/helper";
 
 const FinalCheckout = () => {
-  const [selectedAddress, setSelectedAddress] = useState(0);
+
+
+  const [step, setstep] = useState(0)
 
   const [allAddressList, setallAddressList] = useState([])
   const [currentDeliveryAddress, setcurrentDeliveryAddress] = useState([])
+  const [paymentMethod, setpaymentMethod] = useState('')
+  const [productDetails, setproductDetails] = useState({
+    product: [],
+    totalAmount: "",
+  });
 
   const [allmodel, setallmodel] = useState({
     showAddressModel: false,
     data: []
   })
 
+
+  console.log("")
 
   const getAllAddress = async () => {
     await authAxios()
@@ -51,12 +62,43 @@ const FinalCheckout = () => {
     }
   }
 
+  const getAllcartsProducts = async () => {
+    await authAxios()
+      .get(`/cart/get-cart-products`)
+      .then((response) => {
+        const resData = response.data;
+        console.log(resData);
+
+        let totalAmount = 0;
+        resData.data.map((item) => {
+          totalAmount = totalAmount + item.quantity * item.product.price;
+        });
+
+        setproductDetails((prev) => ({
+          ...prev,
+          product: resData.data,
+          totalAmount: Math.round(totalAmount),
+        }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const handleNext = () => {
+    setstep(step + 1)
+
+    if (step + 1 == 1) {
+      getAllcartsProducts()
+    }
+  }
 
 
 
 
-  console.log("getAllAddress", allAddressList)
+
+  console.log("getAllAddress", productDetails)
   useEffect(() => {
+    getAllcartsProducts()
     getAllAddress()
   }, [])
 
@@ -69,9 +111,11 @@ const FinalCheckout = () => {
 
 
           <div className="border-b border-gray-300 pb-4 mb-4">
-            <h2 className="text-lg font-medium">1. DELIVERY ADDRESS</h2>
+
+
+            <h2 className="text-lg font-medium bg-[#665e5e] text-white p-1 rounded-[5px]">1. DELIVERY ADDRESS</h2>
             {
-              allAddressList && allAddressList.length > 0 && allAddressList.map((item) => (
+              step == 0 && allAddressList && allAddressList.length > 0 && allAddressList.map((item) => (
                 <>
                   <div className="mt-4 space-y-4">
                     {/* Address 1 */}
@@ -84,7 +128,9 @@ const FinalCheckout = () => {
                     </div>
 
                     {
-                      currentDeliveryAddress && currentDeliveryAddress?._id == item?._id && <button className="bg-orange-500 text-white px-4 py-2 rounded mt-4">Deliver Here</button>
+                      currentDeliveryAddress && currentDeliveryAddress?._id == item?._id && <button
+                        onClick={() => setstep(step + 1)}
+                        className="bg-orange-700 text-white px-4 py-2 rounded mt-4">Deliver Here</button>
 
                     }
                   </div>
@@ -92,10 +138,9 @@ const FinalCheckout = () => {
 
               ))
             }
-
-
-
-            <button onClick={() => addAddressModel()} className="text-blue-500 mt-4 block">+ Add a new address</button>
+            {
+              step == 0 && <button onClick={() => addAddressModel()} className="text-blue-500 mt-4 block">+ Add a new address</button>
+            }
 
           </div>
 
@@ -103,12 +148,100 @@ const FinalCheckout = () => {
 
           {/* Order Summary Section */}
           <div className="border-b border-gray-300 pb-4 mb-4">
-            <h2 className="text-lg font-medium">3. ORDER SUMMARY</h2>
+            <h2 className="text-lg font-medium">2. ORDER SUMMARY</h2>
+
+            {
+              step == 1 && <div>
+                <section className="py-8 relative">
+                  <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
+                    {
+                      productDetails && productDetails.product.map((item) => (
+                        <div className="rounded-3xl border-2 border-gray-200 p-4 lg:p-8 grid grid-cols-12 mb-8 max-lg:max-w-lg max-lg:mx-auto gap-y-4">
+                          <div className="col-span-12 lg:col-span-2 img box">
+                            <img
+                              src={handleImage(item?.product?.images[0])}
+                              alt="speaker image"
+                              className="max-lg:w-full lg:w-[180px] rounded-lg object-cover"
+                            />
+                          </div>
+                          <div className="col-span-12 lg:col-span-10 detail w-full lg:pl-3">
+                            <div className="flex items-center justify-between w-full mb-4">
+                              <h5 className="font-manrope font-bold text-2xl leading-9 text-gray-900">
+                                {item?.product?.title}
+                              </h5>
+                              <button className="rounded-full group flex items-center justify-center focus-within:outline-red-500">
+                                <TrashIcon className="h-6 w-6 text-red-500 transition-all duration-500 group-hover:text-white" />
+                              </button>
+                            </div>
+                            <p className="font-normal text-base leading-7 text-gray-500 mb-6">
+                              {item?.product?.description}
+                            </p>
+                            <div className="flex justify-between items-center">
+                              <div className="flex items-center gap-4">
+                                <button
+                                  className="group rounded-[50px] border border-gray-200 shadow-sm shadow-transparent p-2.5 flex items-center justify-center bg-white transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-300 focus-within:outline-gray-300"
+                                >
+                                  <MinusIcon className="h-5 w-5 text-gray-900 transition-all duration-500 group-hover:text-black" />
+                                </button>
+                                <input
+                                  type="text"
+                                  className="border border-gray-200 rounded-full w-10 aspect-square outline-none text-gray-900 font-semibold text-sm py-1.5 px-3 bg-gray-100 text-center"
+                                  readOnly
+                                  value={item?.quantity}
+                                />
+                                <button
+                                  className="group rounded-[50px] border border-gray-200 shadow-sm shadow-transparent p-2.5 flex items-center justify-center bg-white transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-300 focus-within:outline-gray-300"
+                                >
+                                  <PlusIcon className="h-5 w-5 text-gray-900 transition-all duration-500 group-hover:text-black" />
+                                </button>
+                              </div>
+                              <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right"> ${item?.product?.price}</h6>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    }
+
+                  </div>
+
+
+                </section>
+                <button
+                  onClick={() => handleNext()}
+                  class="rounded-full w-full max-w-[280px] py-4 text-center justify-center items-center bg-indigo-600 font-semibold text-lg text-white flex transition-all duration-500 hover:bg-indigo-700">Continue
+                  to Payment
+                  <ArrowRightCircleIcon className="w-8 h-8 ml-5" />
+                </button>
+              </div>
+            }
           </div>
 
-          {/* Payment Options Section */}
           <div>
-            <h2 className="text-lg font-medium">4. PAYMENT OPTIONS</h2>
+            <h2 className="text-lg font-medium">3. PAYMENT OPTIONS</h2>
+
+            {step === 2 && (
+              <>
+                <ul>
+                  <li onClick={() => setpaymentMethod('card')} className="flex items-center">
+                    <input type="radio" id="card" name="payment" />
+                    <label htmlFor="card" className="ml-2">Card</label>
+                  </li>
+                  <li onClick={() => setpaymentMethod('cash')} className="flex items-center">
+                    <input type="radio" id="cash" name="payment" />
+                    <label htmlFor="cash" className="ml-2">Cash On Delivery</label>
+                  </li>
+                </ul>
+
+                {
+                  paymentMethod && paymentMethod.length > 0 && <button
+                    // onClick={() => setstep(step + 1)}
+                    className="bg-orange-700 text-white px-4 py-2 rounded mt-4">Confirm</button>
+                }
+              </>
+            )}
+
+
+
           </div>
         </div>
 
@@ -149,8 +282,6 @@ const FinalCheckout = () => {
           addAddressModel={addAddressModel}
           setallmodel={setallmodel}
           allmodel={allmodel}
-
-
         />
       }
     </div>
