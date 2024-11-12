@@ -9,7 +9,7 @@ import {
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import ProductModel from "./Model/ProductModel";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import ProductDetail from "../../Common/ProductDetail";
 import { handleViewPrice, handleViewRating } from "../../utils/helper";
 import Pagination from "../../Common/Pagination";
