@@ -6,7 +6,7 @@ import ProductCard from "../../Common/ProductCard";
 import { FaRegEye, FaRegStar, FaStar } from "react-icons/fa";
 import { LuArrowLeftRight } from "react-icons/lu";
 import { MdOutlineStarOutline } from "react-icons/md";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import ProductDetail from "../../Common/ProductDetail";
 import HomePageList from "../../Common/HomePageList";
 import { IoMdCart } from "react-icons/io";
@@ -97,7 +97,7 @@ const Home = ({setLoading}) => {
        // fetchAllproducts();
         getAllwishlistProducts();
 
-        //  toast.success(response.data.message);
+        toast.success(response.data.message);
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -112,7 +112,7 @@ const Home = ({setLoading}) => {
       .then((response) => {
         const resData = response.data;
 
-        // toast.success(resData.message);
+         toast.success(resData.message);
         getAllwishlistProducts();
       })
       .catch((error) => {
@@ -131,7 +131,7 @@ const Home = ({setLoading}) => {
     await authAxios()
       .post(`/cart/add-to-cart/${item._id}`)
       .then((response) => {
-        // toast.success(response.data.message);
+         toast.success(response.data.message);
         setshowcart(true);
       })
       .catch((error) => {

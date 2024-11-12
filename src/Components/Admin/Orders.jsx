@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { authAxios } from "../../config/config";
 import { dateFormat } from "../../utils/helper";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 
 const AOrders = () => {
   const [allOrders, setallOrders] = useState([]);

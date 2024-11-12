@@ -3,6 +3,8 @@ import { authAxios } from "../../config/config";
 import AddressModel from "./Model/AddressModel";
 import { TrashIcon, MinusIcon, PlusIcon, ArrowLeftIcon, ArrowRightCircleIcon } from "@heroicons/react/24/outline"
 import { handleImage } from "../../utils/helper";
+import toast, { Toaster } from "react-hot-toast";
+import AllProductModel from "./Model/AllProductModel";
 
 const FinalCheckout = () => {
 
@@ -19,11 +21,12 @@ const FinalCheckout = () => {
 
   const [allmodel, setallmodel] = useState({
     showAddressModel: false,
-    data: []
+    data: [],
+    showAllproductsModel:false
   })
 
 
-  console.log("")
+  
 
   const getAllAddress = async () => {
     await authAxios()
@@ -67,12 +70,22 @@ const FinalCheckout = () => {
       .get(`/cart/get-cart-products`)
       .then((response) => {
         const resData = response.data;
-        console.log(resData);
+        console.log("resDataresDataresData",resData);
 
         let totalAmount = 0;
         resData.data.map((item) => {
           totalAmount = totalAmount + item.quantity * item.product.price;
         });
+
+
+    if(resData.data.length==0){
+      setallmodel((prev) => ({
+        ...prev,
+        showAllproductsModel: true,
+        data: []
+      }))
+    }
+        
 
         setproductDetails((prev) => ({
           ...prev,
@@ -91,6 +104,45 @@ const FinalCheckout = () => {
       getAllcartsProducts()
     }
   }
+
+  const removeProductfromCart = async (id) => {
+    console.log("sds", id);
+
+    await authAxios()
+      .delete(`/cart/remove-from-cart/${id}`)
+      .then((response) => {
+        getAllcartsProducts();
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const increaseProductquantity = async (item) => {
+    await authAxios()
+      .post(`/cart/add-to-cart/${item?.product?._id}`)
+      .then((response) => {
+        getAllcartsProducts();
+        toast.success(response.data.message);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
+  };
+
+  const decreaseProductquantity = async (item) => {
+    await authAxios()
+      .put(`/cart/decrease-product-quantity/${item?.product?._id}`)
+      .then((response) => {
+        getAllcartsProducts();
+         toast.success(response.data.message);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
+  };
+
 
 
 
@@ -169,7 +221,7 @@ const FinalCheckout = () => {
                               <h5 className="font-manrope font-bold text-2xl leading-9 text-gray-900">
                                 {item?.product?.title}
                               </h5>
-                              <button className="rounded-full group flex items-center justify-center focus-within:outline-red-500">
+                              <button onClick={()=>removeProductfromCart(item?._id)} className="rounded-full group flex items-center justify-center focus-within:outline-red-500">
                                 <TrashIcon className="h-6 w-6 text-red-500 transition-all duration-500 group-hover:text-white" />
                               </button>
                             </div>
@@ -179,6 +231,7 @@ const FinalCheckout = () => {
                             <div className="flex justify-between items-center">
                               <div className="flex items-center gap-4">
                                 <button
+                                 onClick={()=>decreaseProductquantity(item)}
                                   className="group rounded-[50px] border border-gray-200 shadow-sm shadow-transparent p-2.5 flex items-center justify-center bg-white transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-300 focus-within:outline-gray-300"
                                 >
                                   <MinusIcon className="h-5 w-5 text-gray-900 transition-all duration-500 group-hover:text-black" />
@@ -190,6 +243,7 @@ const FinalCheckout = () => {
                                   value={item?.quantity}
                                 />
                                 <button
+                                onClick={()=>increaseProductquantity(item)}
                                   className="group rounded-[50px] border border-gray-200 shadow-sm shadow-transparent p-2.5 flex items-center justify-center bg-white transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-300 focus-within:outline-gray-300"
                                 >
                                   <PlusIcon className="h-5 w-5 text-gray-900 transition-all duration-500 group-hover:text-black" />
@@ -206,12 +260,15 @@ const FinalCheckout = () => {
 
 
                 </section>
-                <button
+                {
+                  productDetails.product.length>0&&  <button
                   onClick={() => handleNext()}
                   class="rounded-full w-full max-w-[280px] py-4 text-center justify-center items-center bg-indigo-600 font-semibold text-lg text-white flex transition-all duration-500 hover:bg-indigo-700">Continue
                   to Payment
                   <ArrowRightCircleIcon className="w-8 h-8 ml-5" />
                 </button>
+                }
+               
               </div>
             }
           </div>
@@ -282,6 +339,12 @@ const FinalCheckout = () => {
           addAddressModel={addAddressModel}
           setallmodel={setallmodel}
           allmodel={allmodel}
+        />
+      }
+
+      {
+        allmodel?.showAllproductsModel&&<AllProductModel
+         
         />
       }
     </div>

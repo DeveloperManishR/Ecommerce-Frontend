@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { HiCash } from "react-icons/hi";
 import { authAxios } from "../../config/config";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { handleImage } from "../../utils/helper";
 import { useSocket } from "../../config/SocketContext";

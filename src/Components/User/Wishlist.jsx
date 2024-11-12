@@ -7,7 +7,7 @@ import { IoMdCart } from "react-icons/io";
 
 import { LuArrowLeftRight } from "react-icons/lu";
 import { MdOutlineStarOutline } from "react-icons/md";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import ProductDetail from "../../Common/ProductDetail";
 import CheckoutCart from "./CheckoutCart";
 import DynamicRating from "../../Common/DynamicRating";

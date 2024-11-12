@@ -5,7 +5,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../Redux/Reducers/authSlice";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { useSocket } from "../config/SocketContext";
 
 const navigation = [

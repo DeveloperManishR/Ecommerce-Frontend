@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { withoutAuthAxios } from "../config/config";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import IsLoadingHOC from "./IsLoadingHOC";
 import { useDispatch, useSelector } from "react-redux";
 import {

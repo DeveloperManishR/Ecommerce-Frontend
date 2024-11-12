@@ -6,7 +6,7 @@ import ProductCard from "../../Common/ProductCard";
 import { FaRegEye, FaRegStar, FaStar } from "react-icons/fa";
 import { LuArrowLeftRight } from "react-icons/lu";
 import { MdOutlineStarOutline } from "react-icons/md";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import ProductDetail from "../../Common/ProductDetail";
 import HomePageList from "../../Common/HomePageList";
 import { IoMdCart } from "react-icons/io";
