@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <Routing  />
-      <Toaster  position="bottom-center"/>
+      <Toaster  position="bottom-center"/> 
     </>
   );
 }
