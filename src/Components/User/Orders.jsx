@@ -6,12 +6,9 @@ import { useSelector } from "react-redux";
 
 const Orders = () => {
   const userId = useSelector((state) => state.auth.user.id);
-
-  const [allOrders, setallOrders] = useState([]);
-
-  const [currentTab, setcurrentTab] = useState("all");
-
-  const [allmodel, setallmodel] = useState({
+  const [allOrders, setAllOrders] = useState([]);
+  const [currentTab, setCurrentTab] = useState("all");
+  const [allModel, setAllModel] = useState({
     show: false,
     rating: 0,
     comment: "",
@@ -19,251 +16,149 @@ const Orders = () => {
     orderItemid: "",
   });
 
-  const getAllOrder = async (data) => {
-    if (data) {
-      setcurrentTab(data);
+  const getAllOrders = async (status) => {
+    setCurrentTab(status);
+    try {
+      const response = await authAxios().get(`/order/users-get-all-orders`);
+      setAllOrders(response.data.data);
+    } catch (error) {
+      console.error(error);
     }
-    await authAxios()
-      .get(`/order/users-get-all-orders`)
-      .then((response) => {
-        const resData = response.data;
-        setallOrders(resData.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
-  const filterOrder = async (data) => {
-    setcurrentTab(data);
-    console.log("data", data);
-
-    await authAxios()
-      .post(`/order/filter-product`, { orderStatus: data })
-      .then((response) => {
-        const resData = response.data;
-        setallOrders(resData.data);
-      })
-      .catch((error) => {
-        console.log(error);
+  const filterOrders = async (status) => {
+    setCurrentTab(status);
+    try {
+      const response = await authAxios().post(`/order/filter-product`, {
+        orderStatus: status,
       });
-  };
-
-  const handleSubmitReview = async () => {
-    const payload = {
-      rating: allmodel.rating,
-      comment: allmodel.comment,
-      product: allmodel.product,
-      orderItemid: allmodel.orderItemid,
-      userid: userId,
-    };
-
-    console.log(payload);
-    await authAxios()
-      .post(`/review/add-product-review`, payload)
-      .then((response) => {
-        setallmodel((prev) => ({
-          ...prev,
-          show: false,
-          rating: 0,
-          comment: "",
-          product: "",
-          orderItemid: "",
-        }));
-      })
-      .catch((error) => {});
+      setAllOrders(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    getAllOrder();
+    getAllOrders();
   }, []);
 
-  console.log("all", allOrders);
-  // /users-get-all-orders
-
   return (
-    <section className="py-24 relative">
-      <div className="w-full max-w-7xl mx-auto px-4 md:px-8">
-        <h2 className="font-manrope font-extrabold text-3xl lead-10 text-black mb-9">
+    <section className="py-20 bg-gray-50 font-[Inter]">
+      <div className="max-w-6xl mx-auto px-5 md:px-8">
+        <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-6">
           Order History
         </h2>
-        <div className="flex sm:flex-col lg:flex-row sm:items-center justify-between">
-          <ul className="flex max-sm:flex-col sm:items-center gap-x-14 gap-y-3">
-            <li
-              onClick={() => getAllOrder("all")}
-              className={`font-medium text-lg leading-8 cursor-pointer ${
-                currentTab == "all" ? "text-indigo-600" : "text-black"
-              }  transition-all duration-500 hover:text-indigo-600`}
-            >
-              All Order
-            </li>
-            <li
-              onClick={() => filterOrder("pending")}
-              className={`font-medium text-lg leading-8 cursor-pointer ${
-                currentTab == "pending" ? "text-indigo-600" : "text-black"
-              } transition-all duration-500 hover:text-indigo-600`}
-            >
-              Pending
-            </li>
-            <li
-              onClick={() => filterOrder("dispatch")}
-              className={`font-medium text-lg leading-8 cursor-pointer ${
-                currentTab == "dispatch" ? "text-indigo-600" : "text-black"
-              } transition-all duration-500 hover:text-indigo-600`}
-            >
-              Dispatched
-            </li>
-            <li
-              onClick={() => filterOrder("completed")}
-              className={`font-medium text-lg leading-8 cursor-pointer${
-                currentTab == "completed" ? "text-indigo-600" : "text-black"
-              } transition-all duration-500 hover:text-indigo-600`}
-            >
-              Completed
-            </li>
+
+        {/* Order Tabs */}
+        <div className="flex justify-center mb-6">
+          <ul className="flex space-x-8 text-lg font-medium">
+            {["all", "dispatch", "completed"].map((tab) => (
+              <li
+                key={tab}
+                onClick={() =>
+                  tab === "all" ? getAllOrders(tab) : filterOrders(tab)
+                }
+                className={`cursor-pointer pb-2 border-b-4 transition-all duration-300 ${
+                  currentTab === tab
+                    ? "border-indigo-600 text-indigo-600"
+                    : "border-transparent text-gray-600 hover:text-indigo-600"
+                }`}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </li>
+            ))}
           </ul>
         </div>
-        <div className="mt-7 border border-gray-300 pt-9">
-          {allOrders &&
-            allOrders.length > 0 &&
-            allOrders.map((item) => (
-              <>
-                <div className="flex max-md:flex-col items-center justify-between px-3 md:px-11">
-                  <div className="data">
-                    <p className="font-medium text-lg leading-8 text-black whitespace-nowrap">
-                      Order : {item?._id}
+
+        {/* Order List */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          {allOrders.length > 0 ? (
+            allOrders.map((order) => (
+              <div key={order._id} className="mb-8 border-b pb-6">
+                {/* Order Header */}
+                <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg">
+                  <div>
+                    <p className="text-gray-700">
+                      <span className="font-semibold">Order:</span> {order._id}
                     </p>
-                    <p className="font-medium text-lg leading-8 text-black mt-3 whitespace-nowrap">
-                      Order date : {dateFormat(item.createdAt)}
+                    <p className="text-gray-500 text-sm">
+                      Date: {dateFormat(order.createdAt)}
                     </p>
                   </div>
-                  <div className="flex items-center gap-3 max-md:mt-5">
-                    <button className="rounded-full px-7 py-3 bg-white text-gray-900 border border-gray-300 font-semibold text-sm shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:bg-gray-50 hover:border-gray-400">
-                      Show Invoice
-                    </button>
-                    <button className="rounded-full px-7 py-3 bg-indigo-600 shadow-sm shadow-transparent text-white font-semibold text-sm transition-all duration-500 hover:shadow-indigo-400 hover:bg-indigo-700">
-                      Buy Now
-                    </button>
-                  </div>
+                  <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition">
+                    Download Invoice
+                  </button>
                 </div>
-                <svg
-                  className="my-9 w-full"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={1216}
-                  height={2}
-                  viewBox="0 0 1216 2"
-                  fill="none"
-                >
-                  <path d="M0 1H1216" stroke="#D1D5DB" />
-                </svg>
 
-                {item.orderItems.map((order) => (
-                  <>
-                    <div className="flex max-lg:flex-col items-center gap-8 lg:gap-24 px-3 md:px-11">
-                      <div className="grid grid-cols-4 w-full">
-                        <div className="col-span-4 sm:col-span-1">
-                          <img
-                            src={handleImage(order.product.images[0])}
-                            alt=""
-                            className="max-sm:mx-auto"
-                          />
-                        </div>
-                        <div className="col-span-4 sm:col-span-3 max-sm:mt-4 sm:pl-8 flex flex-col justify-center max-sm:items-center">
-                          <h6 className="font-manrope font-semibold text-2xl leading-9 text-black mb-3 whitespace-nowrap">
-                            {order.product.title}
-                          </h6>
-                          <p className="font-normal text-lg leading-8 text-gray-500 mb-8 whitespace-nowrap">
-                            {order.product.category}
-                          </p>
-                          <div className="flex items-center max-sm:flex-col gap-x-10 gap-y-3">
-                            {/* <span className="font-normal text-lg leading-8 text-gray-500 whitespace-nowrap">
-                              Size: s
-                            </span> */}
-                            <span className="font-normal text-lg leading-8 text-gray-500 whitespace-nowrap">
-                              Qty: {order.quantity}
-                            </span>
-                            <p className="font-semibold text-xl leading-8 text-black whitespace-nowrap">
-                              Price ${order.price}
-                            </p>
-                          </div>
-                        </div>
+                {/* Order Items */}
+                {order.orderItems.map((item) => (
+                  <div
+                    key={item._id}
+                    className="flex flex-col sm:flex-row items-center gap-6 p-4 border rounded-lg mt-4 bg-gray-50 shadow-sm"
+                  >
+                    {/* Product Image */}
+                    <img
+                      src={handleImage(item.product.images[0])}
+                      alt={item.product.title}
+                      className="w-24 h-24 object-cover rounded-lg shadow"
+                    />
 
-                        {order.orderStatus == "completed" &&
-                          order.reviewid == null && (
-                            <button
-                              onClick={() =>
-                                setallmodel((prev) => ({
-                                  ...prev,
-                                  show: true,
-                                  product: order.product._id,
-                                  orderItemid: order._id,
-                                }))
-                              }
-                              className="bg-black text-white"
-                            >
-                              {" "}
-                              Add Review
-                            </button>
-                          )}
-
-                        {order.orderStatus == "completed" && order.reviewid && (
-                          <button
-                            onClick={() =>
-                              setallmodel((prev) => ({
-                                ...prev,
-                                show: true,
-                                product: order.product._id,
-                                orderItemid: order._id,
-                                rating:order.reviewid.rating
-                              }))
-                            }
-                            className="bg-black text-white"
-                          >
-                            View Review
-                          </button>
-                        )}
-                       
-                      </div>
-                      <div className="flex items-center justify-around w-full  sm:pl-28 lg:pl-0">
-                        <div className="flex flex-col justify-center items-start max-sm:items-center">
-                          <p className="font-normal text-lg text-gray-500 leading-8 mb-2 text-left whitespace-nowrap">
-                            Order Status
-                          </p>
-                          <p
-                            className={`font-bold text-lg leading-8 ${
-                              order.orderStatus == "pending"
-                                ? "text-yellow-400"
-                                : "text-green-500"
-                            }  text-left whitespace-nowrap`}
-                          >
-                            {order.orderStatus}
-                          </p>
-                        </div>
-                        
+                    {/* Product Details */}
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg">{item.product.title}</h3>
+                      <p className="text-gray-500">{item.product.category}</p>
+                      <div className="flex items-center gap-4 mt-2">
+                        <span className="text-gray-600">Qty: {item.quantity}</span>
+                        <p className="font-bold text-lg">${item.price}</p>
                       </div>
                     </div>
 
-                    <svg
-                      className="my-9 w-full"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={1216}
-                      height={2}
-                      viewBox="0 0 1216 2"
-                      fill="none"
-                    >
-                      <path d="M0 1H1216" stroke="#D1D5DB" />
-                    </svg>
-                  </>
+                    {/* Order Status & Review */}
+                    <div className="flex flex-col items-center">
+                      <p className="text-sm text-gray-500">Order Status</p>
+                      <p
+                        className={`font-semibold text-lg ${
+                          item.orderStatus === "pending"
+                            ? "text-yellow-500"
+                            : "text-green-600"
+                        }`}
+                      >
+                        {item.orderStatus}
+                      </p>
+
+                      {item.orderStatus === "completed" && (
+                        <button
+                          onClick={() =>
+                            setAllModel({
+                              show: true,
+                              product: item.product._id,
+                              orderItemid: item._id,
+                              rating: item.reviewid ? item.reviewid.rating : 0,
+                            })
+                          }
+                          className="mt-3 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+                        >
+                          {item.reviewid ? "View Review" : "Add Review"}
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 ))}
-              </>
-            ))}
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500 font-semibold">
+              No orders found.
+            </p>
+          )}
         </div>
 
-        {allmodel.show && (
+        {/* Review Modal */}
+        {allModel.show && (
           <ReviewModel
-            allmodel={allmodel}
-            setallmodel={setallmodel}
-            handleSubmitReview={handleSubmitReview}
+            allmodel={allModel}
+            setallmodel={setAllModel}
+            handleSubmitReview={() => {}}
           />
         )}
       </div>

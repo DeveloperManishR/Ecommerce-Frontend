@@ -152,7 +152,7 @@ export const Routing = () => {
             element={
               <PrivateUserRoute>
                 {" "}
-                <FinalCheckout />{" "}
+                <Checkout />{" "}
               </PrivateUserRoute>
             }
           />
